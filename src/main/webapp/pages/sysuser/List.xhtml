@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ez="jakarta.faces.composite/ezcomp">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListSysuserTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListSysuserEmpty}" rendered="#{sysuserController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{sysuserController.items.rowCount > 0}">
+                    <h:outputText value="#{sysuserController.pagination.pageFirstItem + 1}..#{sysuserController.pagination.pageLastItem + 1}/#{sysuserController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{sysuserController.previous}" value="#{bundle.Previous} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{sysuserController.next}" value="#{bundle.Next} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable class="table" value="#{sysuserController.items}" var="item">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSysuserTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSysuserTitle_dni}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dni}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Apellidos y Nombres"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastnameOne} #{item.lastnameTwo} #{item.name} "/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSysuserTitle_address}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.address}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSysuserTitle_email}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSysuserTitle_status}"/>
+                            </f:facet>
+                            <div class="inline-grid *:[grid-area:1/1]">
+                                <div class="status #{item.status == false ? 'status-error':'status-success'}  animate-ping"></div>
+                                <div class="status #{item.status == false ? 'status-error':'status-success'}"></div>
+                            </div> #{item.status == false ? 'inactivo':'activo'}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink value="#{bundle.ListSysuserViewLink}" onclick="viewModal.showModal()">
+                                <f:ajax execute="@this" render="formView" listener="#{sysuserController.prepareView}" />
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{sysuserController.prepareEdit}" value="#{bundle.ListSysuserEditLink}" onclick="editModal.showModal()">
+                                <f:ajax execute="@this" render="formEdit"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{sysuserController.destroy}" value="#{bundle.ListSysuserDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{sysuserController.prepareCreate}" value="#{bundle.ListSysuserCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListSysuserIndexLink}"/>
+
+            </h:form>
+
+            <ez:modalInformation modalId="viewModal" 
+                                 modalTitle="Detalles de usuario" 
+                                 closeOnBackdrop="true">
+
+                <f:facet name="modalContent">
+
+                    <ui:include src="View.xhtml"/>
+                </f:facet>
+            </ez:modalInformation>
+
+            <ez:modalInformation modalId="editModal" 
+                                 modalTitle="Detalles de usuario" 
+                                 closeOnBackdrop="true">
+
+                <f:facet name="modalContent">
+
+                    <ui:include src="Edit.xhtml"/>
+                </f:facet>
+            </ez:modalInformation>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

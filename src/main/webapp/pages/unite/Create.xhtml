@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateUniteTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{uniteController.selected.id}" title="#{bundle.CreateUniteTitle_id}" required="true" requiredMessage="#{bundle.CreateUniteRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_created}" for="created" />
+                    <h:inputText id="created" value="#{uniteController.selected.created}" title="#{bundle.CreateUniteTitle_created}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_deleted}" for="deleted" />
+                    <h:inputText id="deleted" value="#{uniteController.selected.deleted}" title="#{bundle.CreateUniteTitle_deleted}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_modified}" for="modified" />
+                    <h:inputText id="modified" value="#{uniteController.selected.modified}" title="#{bundle.CreateUniteTitle_modified}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{uniteController.selected.name}" title="#{bundle.CreateUniteTitle_name}" />
+                    <h:outputLabel value="#{bundle.CreateUniteLabel_fkDistrict}" for="fkDistrict" />
+                    <h:selectOneMenu id="fkDistrict" value="#{uniteController.selected.fkDistrict}" title="#{bundle.CreateUniteTitle_fkDistrict}" required="true" requiredMessage="#{bundle.CreateUniteRequiredMessage_fkDistrict}">
+                        <f:selectItems value="#{districtController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{uniteController.create}" value="#{bundle.CreateUniteSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{uniteController.prepareList}" value="#{bundle.CreateUniteShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateUniteIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

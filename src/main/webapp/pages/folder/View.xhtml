@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewFolderTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewFolderLabel_id}"/>
+                    <h:outputText value="#{folderController.selected.id}" title="#{bundle.ViewFolderTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewFolderLabel_code}"/>
+                    <h:outputText value="#{folderController.selected.code}" title="#{bundle.ViewFolderTitle_code}"/>
+                    <h:outputText value="#{bundle.ViewFolderLabel_created}"/>
+                    <h:outputText value="#{folderController.selected.created}" title="#{bundle.ViewFolderTitle_created}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewFolderLabel_deleted}"/>
+                    <h:outputText value="#{folderController.selected.deleted}" title="#{bundle.ViewFolderTitle_deleted}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewFolderLabel_modified}"/>
+                    <h:outputText value="#{folderController.selected.modified}" title="#{bundle.ViewFolderTitle_modified}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewFolderLabel_retired}"/>
+                    <h:outputText value="#{folderController.selected.retired}" title="#{bundle.ViewFolderTitle_retired}"/>
+                    <h:outputText value="#{bundle.ViewFolderLabel_status}"/>
+                    <h:outputText value="#{folderController.selected.status}" title="#{bundle.ViewFolderTitle_status}"/>
+                    <h:outputText value="#{bundle.ViewFolderLabel_fkStudent}"/>
+                    <h:outputText value="#{folderController.selected.fkStudent}" title="#{bundle.ViewFolderTitle_fkStudent}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{folderController.destroyAndView}" value="#{bundle.ViewFolderDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewFolderEditLink}"/>
+                <br />
+                <h:commandLink action="#{folderController.prepareCreate}" value="#{bundle.ViewFolderCreateLink}" />
+                <br />
+                <h:commandLink action="#{folderController.prepareList}" value="#{bundle.ViewFolderShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewFolderIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

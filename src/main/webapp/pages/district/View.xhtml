@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewDistrictTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewDistrictLabel_id}"/>
+                    <h:outputText value="#{districtController.selected.id}" title="#{bundle.ViewDistrictTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewDistrictLabel_code}"/>
+                    <h:outputText value="#{districtController.selected.code}" title="#{bundle.ViewDistrictTitle_code}"/>
+                    <h:outputText value="#{bundle.ViewDistrictLabel_name}"/>
+                    <h:outputText value="#{districtController.selected.name}" title="#{bundle.ViewDistrictTitle_name}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{districtController.destroyAndView}" value="#{bundle.ViewDistrictDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewDistrictEditLink}"/>
+                <br />
+                <h:commandLink action="#{districtController.prepareCreate}" value="#{bundle.ViewDistrictCreateLink}" />
+                <br />
+                <h:commandLink action="#{districtController.prepareList}" value="#{bundle.ViewDistrictShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewDistrictIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

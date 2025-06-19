@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:c="jakarta.tags.core">
+
+    <ui:composition>
+
+
+        <h:form id="formView">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-full ...">
+                    <div class="flex flex-row content-center">
+                        <div class="basis-1/3">
+                            <div class="avatar avatar-placeholder">
+                                <div class="bg-neutral text-neutral-content w-24 rounded-full">
+                                    <span class="text-3xl">D</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basis-2/3 content-center">
+                            <strong>
+                                #{sysuserController.selected.name} 
+                                #{sysuserController.selected.lastnameOne} 
+                                #{sysuserController.selected.lastnameTwo}
+                            </strong>
+                            <div class="flex flex-col ... gap-2"> 
+                                <div class="basis-auto">
+                                    <div class="inline-grid *:[grid-area:1/1]">
+                                        <div class="status #{sysuserController.selected.status == false ? 'status-error':'status-success'}  animate-ping"></div>
+                                        <div class="status #{sysuserController.selected.status == false ? 'status-error':'status-success'}"></div>
+                                    </div> #{sysuserController.selected.status == false ? 'Usuario inactivo': 'Usuario activo'}
+                                </div>
+                                <div class="basis-auto">
+                                    Tipo de usuario: <div class="badge badge-neutral badge-dash">#{sysuserController.selected.fkLvlusr.name}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="...">
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <h:graphicImage alt="user-icon" library="images" name="user_icon.svg"/>
+                            <p><h:outputText value="#{bundle.ViewSysuserLabel_name}"/></p>
+                        </div>
+                    </div>
+                    <h:outputText class="font-light" value="#{sysuserController.selected.name} #{sysuserController.selected.lastnameOne} #{sysuserController.selected.lastnameTwo}" title="#{bundle.ViewSysuserTitle_name}"/>
+                </div>
+                <div class="...">
+                    <div class="flex items-center">
+                        <h:graphicImage alt="user-icon" library="images" name="history.svg"/>
+                        <p>Feha de registro</p>
+                    </div>
+                    <time>
+                        <h:outputText value="#{sysuserController.selected.created}" title="#{bundle.ViewSysuserTitle_created}">
+                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                        </h:outputText>
+                    </time>
+                </div>
+                <div class="...">
+                    <div class="flex items-center">
+                        <h:graphicImage alt="dni-icon" library="images" name="dni.svg" width="24px" height="24px"/>
+                        <h:outputText value="#{bundle.ViewSysuserLabel_dni}"/>
+                    </div>
+                    <h:outputText value="#{sysuserController.selected.dni}" title="#{bundle.ViewSysuserTitle_dni}"/>
+                </div>
+                <div class="...">
+
+                    <div class="flex items-center">
+                        <h:graphicImage alt="mail-icon" library="images" name="mail.svg"/>
+                        <h:outputText value="#{bundle.ViewSysuserLabel_email}"/>
+                    </div>
+                    <h:outputText value="#{sysuserController.selected.email}" title="#{bundle.ViewSysuserTitle_email}"/>
+
+                </div>
+                <div class="col-span-2 ...">
+                    <div class="flex items-center">
+                        <h:graphicImage alt="addres-icon" library="images" name="address.svg"/>
+                        <h:outputText value="#{bundle.ViewSysuserLabel_address}"/>
+                    </div>
+                    <p><h:outputText value="#{sysuserController.selected.address}" title="#{bundle.ViewSysuserTitle_address}"/></p>
+                </div>
+                <div class="col-span-2 ...">
+                    <div class="divider">Estado de cuenta</div>    
+                </div>
+                <div class="...">
+                    <div role="alert" class="alert #{sysuserController.selected.deleted == null ? 'alert-info':'alert-warning'} alert-dash">
+                        <span>
+                            <h:outputText rendered="#{sysuserController.selected.deleted != null}" value="Cuenta con baja temporal el: #{sysuserController.selected.deleted}">
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </h:outputText>
+                            <h:outputText rendered="#{sysuserController.selected.deleted == null}" value="Cuenta activa"/>
+                        </span>
+
+                    </div> 
+
+                </div>
+                <div class="...">
+                    <div role="alert" class="alert #{sysuserController.selected.modified == null ? 'alert-info':'alert-warning'} alert-dash">
+                        <span>
+                            <h:outputText rendered="#{sysuserController.selected.modified != null}" value="Ultima modificacion: #{sysuserController.selected.deleted}">
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </h:outputText>
+                            <h:outputText rendered="#{sysuserController.selected.modified == null}" value="No se a realizado modificaciones en esta cuenta "/>
+                        </span>
+
+                    </div> 
+                </div>
+
+            </div>
+
+
+        </h:form>
+
+    </ui:composition>
+
+</html>

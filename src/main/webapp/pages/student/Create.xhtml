@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateStudentTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{studentController.selected.id}" title="#{bundle.CreateStudentTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_address}" for="address" />
+                    <h:inputText id="address" value="#{studentController.selected.address}" title="#{bundle.CreateStudentTitle_address}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_age}" for="age" />
+                    <h:inputText id="age" value="#{studentController.selected.age}" title="#{bundle.CreateStudentTitle_age}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_age}"/>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_birthday}" for="birthday" />
+                    <h:inputText id="birthday" value="#{studentController.selected.birthday}" title="#{bundle.CreateStudentTitle_birthday}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_created}" for="created" />
+                    <h:inputText id="created" value="#{studentController.selected.created}" title="#{bundle.CreateStudentTitle_created}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_deleted}" for="deleted" />
+                    <h:inputText id="deleted" value="#{studentController.selected.deleted}" title="#{bundle.CreateStudentTitle_deleted}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_dni}" for="dni" />
+                    <h:inputText id="dni" value="#{studentController.selected.dni}" title="#{bundle.CreateStudentTitle_dni}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{studentController.selected.email}" title="#{bundle.CreateStudentTitle_email}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_lastnameOne}" for="lastnameOne" />
+                    <h:inputText id="lastnameOne" value="#{studentController.selected.lastnameOne}" title="#{bundle.CreateStudentTitle_lastnameOne}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_lastnameTwo}" for="lastnameTwo" />
+                    <h:inputText id="lastnameTwo" value="#{studentController.selected.lastnameTwo}" title="#{bundle.CreateStudentTitle_lastnameTwo}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_modified}" for="modified" />
+                    <h:inputText id="modified" value="#{studentController.selected.modified}" title="#{bundle.CreateStudentTitle_modified}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{studentController.selected.name}" title="#{bundle.CreateStudentTitle_name}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_status}" for="status" />
+                    <h:inputText id="status" value="#{studentController.selected.status}" title="#{bundle.CreateStudentTitle_status}" />
+                    <h:outputLabel value="#{bundle.CreateStudentLabel_fkUnit}" for="fkUnit" />
+                    <h:selectOneMenu id="fkUnit" value="#{studentController.selected.fkUnit}" title="#{bundle.CreateStudentTitle_fkUnit}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_fkUnit}">
+                        <f:selectItems value="#{uniteController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{studentController.create}" value="#{bundle.CreateStudentSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{studentController.prepareList}" value="#{bundle.CreateStudentShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateStudentIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

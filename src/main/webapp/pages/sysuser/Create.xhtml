@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:pt="jakarta.faces.passthrough">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define  name="body">
+
+            <div class=" max-w-3xl mx-auto card bg-base-100 w-xl shadow-sm overflow-hidden">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages  errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:form>
+                    <div class="card-body">
+                        <h2 class="card-title">#{bundle.CreateSysuserTitle}</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-full ...">
+                                <div class="flex flex-row content-center">
+                                    <div class="basis-1/3">
+                                        <div class="avatar avatar-placeholder">
+                                            <div class="bg-neutral text-neutral-content w-24 rounded-full">
+                                                <span class="text-3xl">D</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="basis-2/3 content-center">
+                                        <strong><h1 id="userName"/> <h1 id="userLastname" /></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="...">
+                                <h:outputLabel value="#{bundle.CreateSysuserLabel_name}" for="name" />
+                                <h:inputText class="input input-sm" id="name" value="#{sysuserController.selected.name}"
+                                             pt:placeholder="Escribe tu nombre" title="#{bundle.CreateSysuserTitle_name}"
+                                             onkeyup="document.getElementById('userName').innerText = this.value"/>
+
+                            </div>
+                            <div class="...">
+                                <h:outputLabel value="#{bundle.CreateSysuserLabel_lastnameOne}" for="lastnameOne" />
+                                <h:inputText class="input input-sm" id="lastnameOne" pt:placeholder="Escribe tu apellido"
+                                             value="#{sysuserController.selected.lastnameOne}" title="#{bundle.CreateSysuserTitle_lastnameOne}" 
+                                             onkeyup="document.getElementById('userLastname').innerText = this.value" />
+                            </div>
+                            <div class="...">
+                                <fieldset class="fieldset bg-base-100 border-base-300 rounded-box border p-4">
+                                    <legend class="fieldset-legend">Activar cuenta?</legend>
+                                    <label class="label cursor-pointer flex items-center gap-2">
+                                        <h:selectBooleanCheckbox 
+                                            id="status" 
+                                            value="#{sysuserController.selected.status}" 
+                                            styleClass="toggle toggle-xs #{sysuserController.selected.status ? 'toggle-primary' : ''}" >
+                                            <f:ajax execute="@this" render="status status-message" />
+                                        </h:selectBooleanCheckbox>
+                                        <span class="label-text">
+                                            <h:outputLabel id="status-message" value="#{sysuserController.selected.status ? 'Cuenta activa' : 'Cuenta inactiva'}" />
+                                        </span>
+                                    </label>
+                                </fieldset>
+                            </div>
+                            <div class="...">
+                                <fieldset class="fieldset">
+                                    <legend class="fieldset-legend">
+                                        <h:outputLabel value="#{bundle.CreateSysuserLabel_fkLvlusr}" for="fkLvlusr" />
+                                    </legend>
+                                    <h:selectOneMenu class="select select-sm" id="fkLvlusr" value="#{sysuserController.selected.fkLvlusr}" title="#{bundle.CreateSysuserTitle_fkLvlusr}" required="true" requiredMessage="#{bundle.CreateSysuserRequiredMessage_fkLvlusr}">
+                                        <f:selectItems value="#{levlusrController.itemsAvailableSelectOne}"/>
+                                    </h:selectOneMenu>
+                                    <span class="label">Seleccionar el tipo de cuenta</span>
+                                </fieldset>
+                            </div>
+                            <div class="col-span-2 ...">
+                                <h:outputLabel value="#{bundle.CreateSysuserLabel_email}" for="email" />
+                                <h:inputText class="input input-sm w-full validator" id="email" required="true" type="email" pt:placeholder="Escribe tu correo electronico"
+                                             value="#{sysuserController.selected.email}" title="#{bundle.CreateSysuserTitle_email}" />
+                                <div class="validator-hint">Enter valid email address</div>
+                            </div>
+                            <div class="col-span-2 ...">
+                                <h:outputLabel value="#{bundle.CreateSysuserLabel_address}" for="address" />
+                                <h:inputTextarea class="textarea w-full" id="address" value="#{sysuserController.selected.address}" title="#{bundle.CreateSysuserTitle_address}" />
+
+                            </div>
+                        </div>
+
+                        <div class="card-actions justify-center">
+                            <h:commandLink class="btn btn-dash btn-success" action="#{sysuserController.create}" 
+                                           value="#{bundle.CreateSysuserSaveLink}"/>
+                            <h:commandLink action="#{sysuserController.prepareList}" value="#{bundle.EditSysuserShowAllLink}" immediate="true"/>
+
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

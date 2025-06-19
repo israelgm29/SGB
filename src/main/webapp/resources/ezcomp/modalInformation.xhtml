@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:h="jakarta.faces.html"
+      xmlns:c="jakarta.tags.core"
+      xmlns:pt="jakarta.faces.passthrough">
+
+    <cc:interface>
+        <cc:attribute name="modalId" required="true"/>
+        <cc:attribute name="modalTitle" required="true"/>
+        <cc:attribute name="size" default="max-w-xl"/>
+        <cc:attribute name="position" default="middle"/>
+        <cc:attribute name="closeOnBackdrop" type="boolean" default="true"/>
+        <cc:facet name="modalContent" required="true"/>
+        <cc:facet name="modalFooter" required="false"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <dialog id="#{cc.attrs.modalId}" class="modal #{cc.attrs.closeOnBackdrop ? 'backdrop-close' : ''}">
+            <div class="modal-box #{'modal-' += cc.attrs.position} #{cc.attrs.size}">
+                <h:form pt:method="dialog">
+                    <h:commandButton class="btn btn-sm btn-circle absolute right-2 top-2" 
+                                     value="x"/>
+                </h:form>
+                <h3 class="font-bold text-lg">#{cc.attrs.modalTitle}</h3>
+                <div class="py-4 mx-auto">
+                    <cc:renderFacet name="modalContent"/> <!-- Cambiado a renderFacet -->
+                </div>
+                <c:if test="#{not empty cc.facets.modalFooter}">
+                    <div class="modal-action">
+                        <cc:renderFacet name="modalFooter"/> <!-- Cambiado a renderFacet -->
+                    </div>
+                </c:if>
+            </div>
+        </dialog>
+    </cc:implementation>
+</html>
