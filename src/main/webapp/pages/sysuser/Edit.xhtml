@@ -7,7 +7,7 @@
 
     <ui:composition >
 
-        <h:form id="formEdit">
+        <h:form id="formEdit" prependId="false">
             <div class="grid grid-cols-3 gap-4">
                 <div class="col-span-full ...">
                     <div class="flex flex-row content-center">
@@ -25,17 +25,19 @@
                 </div>
                 <div class="...">
                     <h:outputLabel value="#{bundle.EditSysuserLabel_name}" for="name" />
-                    <h:inputText id="name" class="input input-sm" value="#{sysuserController.selected.name}" title="#{bundle.EditSysuserTitle_name}" />
+                    <h:inputText id="name" class="input input-sm" value="#{sysuserController.selected.name}" 
+                                 onkeyup="document.getElementById('userName').innerText = this.value" title="#{bundle.EditSysuserTitle_name}" />
+
+                </div>
+                <div class="...">
+                    <h:outputLabel value="#{bundle.EditSysuserLabel_lastnameOne}" for="lastnameOne" />
+                    <h:inputText id="lastnameOne" class="input input-sm" value="#{sysuserController.selected.lastnameOne}" 
+                                 onkeyup="document.getElementById('userLastname').innerText = this.value" title="#{bundle.EditSysuserTitle_lastnameOne}" />
 
                 </div>
                 <div class="...">
                     <h:outputLabel value="#{bundle.EditSysuserLabel_lastnameTwo}" for="lastnameTwo" />
                     <h:inputText id="lastnameTwo" class="input input-sm" value="#{sysuserController.selected.lastnameTwo}" title="#{bundle.EditSysuserTitle_lastnameTwo}" />
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_lastnameOne}" for="lastnameOne" />
-                    <h:inputText id="lastnameOne" class="input input-sm" value="#{sysuserController.selected.lastnameOne}" title="#{bundle.EditSysuserTitle_lastnameOne}" />
-
                 </div>
                 <div class="...">
                     <h:outputLabel value="#{bundle.EditSysuserLabel_dni}" for="dni" />
@@ -108,14 +110,17 @@
                     </ul>
                 </div>
             </div>
-           
-
-            <br />
-            <br />
-            <h:link outcome="View" value="#{bundle.EditSysuserViewLink}"/>
-            <br />
+            <div class="modal-action">
+                <h:commandButton value="Guardar" action="#{sysuserController.update}" class="btn btn-primary">
+                    <f:ajax execute="@form" render="@form, :listForm:dataTable" 
+                            onevent="function(data) { if (data.status === 'success') editModal.close(); }"/>
+                </h:commandButton>
+                <h:commandButton value="Cancelar" 
+                                 class="btn"
+                                 onclick="editModal.close()"/>
+            </div>
             <h:commandLink action="#{sysuserController.prepareList}" value="#{bundle.EditSysuserShowAllLink}" immediate="true"/>
-        
+
         </h:form>
 
     </ui:composition>
