@@ -8,8 +8,8 @@ import com.bootsystem.controllers.SysuserJpaController;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import jakarta.annotation.Resource;
-import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -20,10 +20,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.transaction.UserTransaction;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 
 @Named("sysuserController")
 @SessionScoped
@@ -85,12 +82,13 @@ public class SysuserController implements Serializable {
     public void prepareView() {
         current = (Sysuser) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        
+
     }
 
     public String prepareCreate() {
         current = new Sysuser();
         current.setCreated(LocalDateTime.now());
+        current.setStatus(Boolean.TRUE);
         selectedItemIndex = -1;
         return "Create";
     }
@@ -109,14 +107,16 @@ public class SysuserController implements Serializable {
     public void prepareEdit() {
         current = (Sysuser) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        
+
     }
 
     public String update() {
         try {
             getJpaController().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SysuserUpdated"));
-            return "View";
+            // Actualizar la lista
+            items = null;
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
