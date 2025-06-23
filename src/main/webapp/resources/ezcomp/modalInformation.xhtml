@@ -19,7 +19,7 @@
         <dialog id="#{cc.attrs.modalId}" class="modal #{cc.attrs.closeOnBackdrop ? 'backdrop-close' : ''}">
             <div class="modal-box #{'modal-' += cc.attrs.position} #{cc.attrs.size}">
                 <h:form id="dialog" pt:method="dialog">
-                    <h:commandButton class="btn btn-sm btn-circle absolute right-2 top-2" 
+                    <h:commandButton action="#{cc.attrs.closeModalFunction}" class="btn btn-sm btn-circle absolute right-2 top-2" 
                                      value="x"/>
                 </h:form>
                 <h3 class="font-bold text-lg">#{cc.attrs.modalTitle}</h3>
