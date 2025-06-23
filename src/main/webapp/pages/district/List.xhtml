@@ -3,23 +3,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:ezcomp="jakarta.faces.composite/ezcomp">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.ListDistrictTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
+
+            <h:form id="listForm">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputText escape="false" value="#{bundle.ListDistrictEmpty}" rendered="#{districtController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{districtController.items.rowCount > 0}">
-                    <h:outputText value="#{districtController.pagination.pageFirstItem + 1}..#{districtController.pagination.pageLastItem + 1}/#{districtController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{districtController.previous}" value="#{bundle.Previous} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{districtController.next}" value="#{bundle.Next} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{districtController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                <h:panelGroup styleClass="card shadow-sm bg-base-100 p-4"  rendered="#{districtController.items.rowCount > 0}">
+                    <div class="flex justify-between">
+                        <div class="...">
+                            <h:commandLink styleClass="btn" action="#{districtController.prepareCreate}" value="#{bundle.ListDistrictCreateLink}">
+                                <f:ajax execute="@this" render="createModalWrapper:formCreate" onevent="function(data) {if(data.status === 'success'){
+                                        createModal.showModal();
+                                        }}" />
+                            </h:commandLink>
+                        </div>
+                        <div class="..."></div>
+                        <div class="...">
+                            <button class="btn btn-dash btn-sm">
+                                PDF
+                            </button>
+                            <button class="btn btn-dash btn-sm">
+                                EXCEL
+                            </button>
+                        </div>
+                    </div>
+
+                    <h:dataTable id="dataTable" styleClass="table" value="#{districtController.items}" var="item" >
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListDistrictTitle_id}"/>
@@ -40,22 +58,64 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
+                                <h:outputText value="Acciones"/>
                             </f:facet>
-                            <h:commandLink action="#{districtController.prepareView}" value="#{bundle.ListDistrictViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{districtController.prepareEdit}" value="#{bundle.ListDistrictEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{districtController.destroy}" value="#{bundle.ListDistrictDestroyLink}"/>
+                            <div class="flex flex-row gap-1">
+                                <h:commandButton type="button" image="#{resource['images/view.svg']}"  action="#{districtController.prepareView}" title="#{bundle.ListDistrictViewLink}">
+                                    <f:ajax execute="@this" render="viewModalWrapper:formView" onevent="function(data) {if (data.status === 'success') {
+                                            viewModal.showModal();
+                                            }
+                                            }"/>
+
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/edit.svg']}" action="#{districtController.prepareEdit}" title="#{bundle.ListDistrictEditLink}">
+
+                                    <f:ajax execute="@this" render="editModalWrapper:formEdit" onevent="function(data) {if (data.status === 'success') {
+                                            editModal.showModal();
+                                            }
+                                            }"/>
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/delete.svg']}" action="#{districtController.destroy}" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                    <f:ajax execute="@this" render="@form" />
+                                </h:commandButton>
+                            </div>
                         </h:column>
                     </h:dataTable>
+                    <div class="flex flex-row items-center justify-center pt-3">
+                        <h:commandLink action="#{districtController.previous}" value="#{bundle.Previous} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:outputText value="#{districtController.pagination.pageFirstItem + 1}..#{districtController.pagination.pageLastItem + 1}/#{districtController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{districtController.next}" value="#{bundle.Next} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasNextPage}"/>&nbsp;
+
+                    </div>
                 </h:panelGroup>
-                <br />
-                <h:commandLink action="#{districtController.prepareCreate}" value="#{bundle.ListDistrictCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListDistrictIndexLink}"/>
             </h:form>
+
+            <ezcomp:modalInformation id="viewModalWrapper" modalId="viewModal" 
+                                     modalTitle="#{bundle.ViewDistrictTitle}" 
+                                     closeOnBackdrop="true">
+
+                <f:facet name="modalContent">
+
+                    <ui:include src="View.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
+
+            <ezcomp:modalInformation id="editModalWrapper" modalId="editModal" 
+                                     modalTitle="#{bundle.EditDistrictTitle}" 
+                                     closeOnBackdrop="true">
+
+                <f:facet name="modalContent">
+
+                    <ui:include src="Edit.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
+            <ezcomp:modalInformation id="createModalWrapper" modalId="createModal" 
+                                     modalTitle="#{bundle.CreateDistrictTitle}"
+                                     closeOnBackdrop="true">
+                <f:facet name="modalContent">
+                    <ui:include src="Create.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
         </ui:define>
     </ui:composition>
 
