@@ -57,7 +57,7 @@ public class SysuserController implements Serializable {
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(10) {
+            pagination = new PaginationHelper(5) {
 
                 @Override
                 public int getItemsCount() {
@@ -76,7 +76,7 @@ public class SysuserController implements Serializable {
     public String prepareList() {
         recreateModel();
         getSelected();
-        return "List";
+        return "List?faces-redirect=true";
     }
 
     public void prepareView() {
@@ -112,6 +112,7 @@ public class SysuserController implements Serializable {
 
     public String update() {
         try {
+            current.setModified(LocalDateTime.now());
             getJpaController().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SysuserUpdated"));
             // Actualizar la lista
