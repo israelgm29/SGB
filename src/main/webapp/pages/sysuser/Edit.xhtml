@@ -67,8 +67,8 @@
                                 <div> <h:outputLabel value="#{bundle.EditSysuserLabel_deleted}" for="deleted" /></div>
                                 <div class="text-xs uppercase font-semibold opacity-60">Dar de baja la cuenta</div>
                             </div>
-                            <h:inputText id="deleted" type="datetime-local" readonly="true " value="#{sysuserController.selected.deleted}" title="#{bundle.EditSysuserTitle_deleted}" >
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            <h:inputText id="deleted"  readonly="true " value="#{sysuserController.selected.deleted}" title="#{bundle.EditSysuserTitle_deleted}" >
+                                 <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </h:inputText>
 
                         </li>
@@ -119,7 +119,6 @@
                                  class="btn"
                                  onclick="editModal.close()"/>
             </div>
-            <h:commandLink action="#{sysuserController.prepareList}" value="#{bundle.EditSysuserShowAllLink}" immediate="true"/>
 
         </h:form>
 

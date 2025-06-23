@@ -85,8 +85,14 @@
 
                         <div class="card-actions justify-center">
                             <h:commandLink class="btn btn-dash btn-success" action="#{sysuserController.create}" 
-                                           value="#{bundle.CreateSysuserSaveLink}"/>
-                            <h:commandLink action="#{sysuserController.prepareList}" value="#{bundle.EditSysuserShowAllLink}" immediate="true"/>
+                                           value="#{bundle.CreateSysuserSaveLink}">
+                                 
+                            </h:commandLink>
+                            <h:commandLink action="#{sysuserController.prepareList}" 
+                                           class="btn"
+                                           value="#{bundle.EditSysuserShowAllLink}" immediate="true">
+                                 <f:ajax execute="@this" render="@all" />
+                            </h:commandLink>
 
                         </div>
                     </div>

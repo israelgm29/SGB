@@ -11,16 +11,25 @@
             <h:outputText value="#{bundle.ListSysuserTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form id="listForm">
+            <h:form id="listForm" >
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputText escape="false" value="#{bundle.ListSysuserEmpty}" rendered="#{sysuserController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{sysuserController.items.rowCount > 0}">
-                    <h:outputText value="#{sysuserController.pagination.pageFirstItem + 1}..#{sysuserController.pagination.pageLastItem + 1}/#{sysuserController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{sysuserController.previous}" value="#{bundle.Previous} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{sysuserController.next}" value="#{bundle.Next} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable id="dataTable" class="table" value="#{sysuserController.items}" var="item">
+                <h:panelGroup styleClass="card shadow-sm bg-base-100 p-4" rendered="#{sysuserController.items.rowCount > 0}">
+                    <div class="flex justify-between">
+                        <div class="...">
+                            <h:commandLink styleClass="btn" action="#{sysuserController.prepareCreate}" value="#{bundle.ListSysuserCreateLink}"/>
+                        </div>
+                        <div class="...">content</div>
+                        <div class="...">
+                            <label class="input">
+
+                                <input type="search"  placeholder="Search" />
+                            </label>
+                        </div>
+                    </div>
+                    <h:dataTable id="dataTable" styleClass="table" rowClasses="hover:bg-base-300 truncate"  value="#{sysuserController.items}" var="item">
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListSysuserTitle_id}"/>
@@ -65,32 +74,40 @@
 
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
+                                <h:outputText value="Acciones"/>
                             </f:facet>
-                            <h:commandLink value="#{bundle.ListSysuserViewLink}" action="#{sysuserController.prepareView}">
-                                <f:ajax execute="@this" render="viewModalWrapper:formView" onevent="function(data) {if (data.status === 'success') {
-                                        viewModal.showModal();
-                                        }
-                                        }"/>
-                            </h:commandLink>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{sysuserController.prepareEdit}" value="#{bundle.ListSysuserEditLink}" onclick="editModal.showModal()">
-                                <f:ajax execute="@this" render="editModalWrapper:formEdit" onevent="function(data) {if (data.status === 'success') {
-                                        editModal.showModal();
-                                        }
-                                        }"/>
-                            </h:commandLink>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{sysuserController.destroy}" value="#{bundle.ListSysuserDestroyLink}"/>
+                            <div class="flex flex-row gap-1">
+                                <h:commandButton type="button" image="#{resource['images/view.svg']}"  action="#{sysuserController.prepareView}" title="#{bundle.ListSysuserViewLink}">
+                                    <f:ajax execute="@this" render="viewModalWrapper:formView" onevent="function(data) {if (data.status === 'success') {
+                                            viewModal.showModal();
+                                            }
+                                            }"/>
+                                    
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/edit.svg']}" action="#{sysuserController.prepareEdit}" title="#{bundle.ListSysuserEditLink}">
+
+                                    <f:ajax execute="@this" render="editModalWrapper:formEdit" onevent="function(data) {if (data.status === 'success') {
+                                            editModal.showModal();
+                                            }
+                                            }"/>
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/delete.svg']}" action="#{sysuserController.destroy}" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                    <f:setPropertyActionListener target="#{sysuserController.selected}" value="#{item}" />
+                                    <f:ajax execute="@this" render="@form" />
+                                </h:commandButton>
+                            </div>
+
+
                         </h:column>
                     </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{sysuserController.prepareCreate}" value="#{bundle.ListSysuserCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListSysuserIndexLink}"/>
+                    <div class="flex flex-row items-center justify-center pt-3">
+                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.previous}" value="#{bundle.Previous} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:outputText value="#{sysuserController.pagination.pageFirstItem + 1}..#{sysuserController.pagination.pageLastItem + 1}/#{sysuserController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.next}" value="#{bundle.Next} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasNextPage}"/>&nbsp;
+                    </div>
 
+                </h:panelGroup>
+              
             </h:form>
 
             <ez:modalInformation id="viewModalWrapper" modalId="viewModal" 
