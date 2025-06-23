@@ -74,46 +74,56 @@ public class DistrictController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        current = null;
+        return "List?faces-redirect=true";
     }
 
-    public String prepareView() {
+    public void prepareView() {
         current = (District) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+
     }
 
-    public String prepareCreate() {
+    public void closeModal() {
+        if (current != null) {
+            current = new District();
+        }
+    }
+
+    public void prepareCreate() {
         current = new District();
         selectedItemIndex = -1;
-        return "Create";
+
     }
 
     public String create() {
         try {
             getJpaController().create(current);
+            items = null; // Esto fuerza la recarga en el próximo get
+
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DistrictCreated"));
-            return prepareCreate();
+            prepareCreate();
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         current = (District) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+
     }
 
-    public String update() {
+    public void update() {
         try {
             getJpaController().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DistrictUpdated"));
-            return "View";
+            items = null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+
         }
     }
 
