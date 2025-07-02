@@ -3,48 +3,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.CreateUniteTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{uniteController.selected.id}" title="#{bundle.CreateUniteTitle_id}" required="true" requiredMessage="#{bundle.CreateUniteRequiredMessage_id}"/>
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_created}" for="created" />
-                    <h:inputText id="created" value="#{uniteController.selected.created}" title="#{bundle.CreateUniteTitle_created}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_deleted}" for="deleted" />
-                    <h:inputText id="deleted" value="#{uniteController.selected.deleted}" title="#{bundle.CreateUniteTitle_deleted}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_modified}" for="modified" />
-                    <h:inputText id="modified" value="#{uniteController.selected.modified}" title="#{bundle.CreateUniteTitle_modified}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_name}" for="name" />
-                    <h:inputText id="name" value="#{uniteController.selected.name}" title="#{bundle.CreateUniteTitle_name}" />
-                    <h:outputLabel value="#{bundle.CreateUniteLabel_fkDistrict}" for="fkDistrict" />
-                    <h:selectOneMenu id="fkDistrict" value="#{uniteController.selected.fkDistrict}" title="#{bundle.CreateUniteTitle_fkDistrict}" required="true" requiredMessage="#{bundle.CreateUniteRequiredMessage_fkDistrict}">
-                        <f:selectItems value="#{districtController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{uniteController.create}" value="#{bundle.CreateUniteSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{uniteController.prepareList}" value="#{bundle.CreateUniteShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateUniteIndexLink}"/>
-            </h:form>
-        </ui:define>
+      xmlns:f="jakarta.faces.core"
+      xmlns:pt="jakarta.faces.passthrough">
+    <ui:composition>
+     
+
+        <h:form id="createForm">
+            <div class="flex flex-row">
+                <!-- Contenedor del formulario (izquierda) -->
+                <div class="w-2/3 pr-4">  <!-- Ajusta el ancho según necesites -->
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend"> <h:outputLabel styleClass="label" value="#{bundle.unit_label_name}" for="name" /></legend>
+                        <h:inputText styleClass="input" id="name" value="#{uniteController.selected.name}"
+                                     pt:placeholder="Nombre de la unidad educativa" title="#{bundle.unit_title_name}" required="true" requiredMessage="Debes rellenar este campo" />
+                        <p class="label"><h:message for="name" errorClass="text-red-800 animate-bounce"/></p>
+                    </fieldset>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend"><h:outputLabel styleClass="label" value="#{bundle.unit_label_fkDistrict}" for="fkDistrict" /></legend>
+                        <h:selectOneMenu id="fkDistrict" styleClass="select" value="#{uniteController.selected.fkDistrict}" title="#{bundle.unit_title_fkDistrict}" required="true" requiredMessage="#{bundle.CreateUniteRequiredMessage_fkDistrict}">
+                            <f:selectItems value="#{districtController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <p class="label"><h:message for="fkDistrict" errorClass="text-red-800 animate-bounce" /></p>
+                    </fieldset>
+                    <h:commandLink class="btn btn-primary" action="#{uniteController.create}" value="#{bundle.btn_save}">
+                   <f:ajax execute="@form" render="@form :listForm:dataTable :listForm:messagePanel" onevent="function(data) { if (data.status === 'success') createModal.close(); }" />
+                    </h:commandLink>
+                </div>
+
+                <!-- Contenedor de la imagen (derecha) -->
+                <div class="w-1/3 flex justify-center items-center">  <!-- Centrado vertical y horizontal -->
+                    <h:graphicImage library="images" name="unite.svg" 
+                                    styleClass="w-32" />  <!-- mx-auto no es necesario aquí -->
+                </div>
+            </div>
+          
+           
+        </h:form>
+
     </ui:composition>
 
 </html>

@@ -5,68 +5,206 @@
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ViewStudentTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputText value="#{bundle.ViewStudentLabel_id}"/>
-                    <h:outputText value="#{studentController.selected.id}" title="#{bundle.ViewStudentTitle_id}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_address}"/>
-                    <h:outputText value="#{studentController.selected.address}" title="#{bundle.ViewStudentTitle_address}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_age}"/>
-                    <h:outputText value="#{studentController.selected.age}" title="#{bundle.ViewStudentTitle_age}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_birthday}"/>
-                    <h:outputText value="#{studentController.selected.birthday}" title="#{bundle.ViewStudentTitle_birthday}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewStudentLabel_created}"/>
-                    <h:outputText value="#{studentController.selected.created}" title="#{bundle.ViewStudentTitle_created}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewStudentLabel_deleted}"/>
-                    <h:outputText value="#{studentController.selected.deleted}" title="#{bundle.ViewStudentTitle_deleted}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewStudentLabel_dni}"/>
-                    <h:outputText value="#{studentController.selected.dni}" title="#{bundle.ViewStudentTitle_dni}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_email}"/>
-                    <h:outputText value="#{studentController.selected.email}" title="#{bundle.ViewStudentTitle_email}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_lastnameOne}"/>
-                    <h:outputText value="#{studentController.selected.lastnameOne}" title="#{bundle.ViewStudentTitle_lastnameOne}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_lastnameTwo}"/>
-                    <h:outputText value="#{studentController.selected.lastnameTwo}" title="#{bundle.ViewStudentTitle_lastnameTwo}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_modified}"/>
-                    <h:outputText value="#{studentController.selected.modified}" title="#{bundle.ViewStudentTitle_modified}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewStudentLabel_name}"/>
-                    <h:outputText value="#{studentController.selected.name}" title="#{bundle.ViewStudentTitle_name}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_status}"/>
-                    <h:outputText value="#{studentController.selected.status}" title="#{bundle.ViewStudentTitle_status}"/>
-                    <h:outputText value="#{bundle.ViewStudentLabel_fkUnit}"/>
-                    <h:outputText value="#{studentController.selected.fkUnit}" title="#{bundle.ViewStudentTitle_fkUnit}"/>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{studentController.destroyAndView}" value="#{bundle.ViewStudentDestroyLink}"/>
-                <br />
-                <br />
-                <h:link outcome="Edit" value="#{bundle.ViewStudentEditLink}"/>
-                <br />
-                <h:commandLink action="#{studentController.prepareCreate}" value="#{bundle.ViewStudentCreateLink}" />
-                <br />
-                <h:commandLink action="#{studentController.prepareList}" value="#{bundle.ViewStudentShowAllLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ViewStudentIndexLink}"/>
+    <ui:composition>
+        <h:form id="viewForm" prependId="false" styleClass="max-w-3xl mx-auto">
+            <!-- Encabezado compacto -->
+            <div class="flex flex-col md:flex-row items-center gap-4 mb-6 p-4 bg-base-100 rounded-box shadow-sm">
+                <div class="avatar">
+                    <h:graphicImage styleClass="w-52 rounded-full text-neutral-content" library="images" name="academic-icon.svg" />
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-xl font-bold">
+                        <h:outputText value="#{studentController.selected.name} #{studentController.selected.lastnameOne} #{studentController.selected.lastnameTwo}" />
+                    </h1>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="badge #{studentController.selected.status ? 'badge-success' : 'badge-error'} gap-1">
+                            #{studentController.selected.status ? 'Activo' : 'Inactivo'}
+                        </span>
+                        <span class="text-sm opacity-70">
+                            <h:outputText value="#{studentController.selected.fkUnit.name}" />
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-            </h:form>
-        </ui:define>
+            <!-- Resumen compacto -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                <div class="bg-base-100 p-2 rounded-box text-center">
+                    <div class="text-xs opacity-70">Edad</div>
+                    <div class="font-medium">
+                        <h:outputText value="#{studentController.selected.age}" /> años
+                    </div>
+                </div>
+
+                <div class="bg-base-100 p-2 rounded-box text-center">
+                    <div class="text-xs opacity-70">DNI</div>
+                    <div class="font-medium">
+                        <h:outputText value="#{studentController.selected.dni}" />
+                    </div>
+                </div>
+
+                <div class="bg-base-100 p-2 rounded-box text-center">
+                    <div class="text-xs opacity-70">Nacimiento</div>
+                    <div class="font-medium">
+                        <h:outputText value="#{studentController.selected.birthday}">
+                            <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </div>
+                </div>
+
+                <div class="bg-base-100 p-2 rounded-box text-center">
+                    <div class="text-xs opacity-70">ID Estudiante</div>
+                    <div class="font-medium">
+                        <h:outputText value="#{studentController.selected.id}" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de detalles -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Columna izquierda -->
+                <div class="space-y-4">
+                    <!-- Información personal -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="user-icon" library="images" name="user_icon.svg" styleClass="w-4 h-4"/>
+                                Información Personal
+                            </h3>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70">Nombre completo</span>
+                                    <span class="font-medium text-end">
+                                        <h:outputText value="#{studentController.selected.name} #{studentController.selected.lastnameOne} #{studentController.selected.lastnameTwo}" />
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70">Fecha nacimiento</span>
+                                    <span class="font-medium">
+                                        <h:outputText value="#{studentController.selected.birthday}">
+                                            <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span class="text-sm opacity-70">Edad</span>
+                                    <span class="font-medium">
+                                        <h:outputText value="#{studentController.selected.age}" /> años
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información académica -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="academic-icon" library="images" name="academic-icon.svg" styleClass="w-4 h-4"/>
+                                Información Académica
+                            </h3>
+
+                            <div class="flex justify-between gap-3">
+                                <span class="text-sm opacity-70">Unidad</span>
+                                <span class="font-medium">
+                                    <h:outputText value="#{studentController.selected.fkUnit.name}" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="space-y-4">
+                    <!-- Contacto -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="contact-icon" library="images" name="mail.svg" styleClass="w-4 h-4"/>
+                                Contacto
+                            </h3>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70">Email</span>
+                                    <a href="mailto:#{studentController.selected.email}" class="link link-primary text-sm">
+                                        <h:outputText value="#{studentController.selected.email}" />
+                                    </a>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span class="text-sm opacity-70">Dirección</span>
+                                    <span class="font-medium text-end">
+                                        <h:outputText value="#{studentController.selected.address}" 
+                                                      rendered="#{not empty studentController.selected.address}"/>
+                                        <h:outputText class="text-gray-400 text-sm" value="No especificada"
+                                              rendered="#{empty studentController.selected.address}"/>
+                                          
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Registro del sistema -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="system-icon" library="images" name="system.svg" styleClass="w-4 h-4"/>
+                                Registro del Sistema
+                            </h3>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70">Fecha creación</span>
+                                    <span class="text-sm font-medium">
+                                        <h:outputText value="#{studentController.selected.created}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70">Última modificación</span>
+                                    <span class="text-sm font-medium">
+                                        <h:outputText value="#{studentController.selected.modified != null ? studentController.selected.modified : 'Nunca'}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short" 
+                                                               rendered="#{studentController.selected.modified != null}"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span class="text-sm opacity-70">Estado</span>
+                                    <span class="text-sm font-medium #{studentController.selected.deleted == null ? 'text-success' : 'text-error'}">
+                                        <h:outputText value="#{studentController.selected.deleted == null ? 'Activo' : 'Inactivo desde'}" />
+                                        <h:outputText value="#{studentController.selected.deleted}" 
+                                                      rendered="#{studentController.selected.deleted != null}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="flex justify-end gap-3 mt-6">
+                <button class="btn btn-sm btn-outline">
+                    <h:graphicImage alt="edit-icon" library="images" name="edit.svg" styleClass="w-4 h-4"/>
+                    Editar
+                </button>
+                <button class="btn btn-sm btn-primary">
+                    <h:graphicImage alt="print-icon" library="images" name="print.svg" styleClass="w-4 h-4"/>
+                    Imprimir
+                </button>
+            </div>
+        </h:form>
     </ui:composition>
 
 </html>

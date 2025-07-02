@@ -3,65 +3,147 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:pt="jakarta.faces.passthrough">
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.CreateStudentTitle}"></h:outputText>
+            <h:outputText value="#{bundle.student_create_title}"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{studentController.selected.id}" title="#{bundle.CreateStudentTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_id}"/>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_address}" for="address" />
-                    <h:inputText id="address" value="#{studentController.selected.address}" title="#{bundle.CreateStudentTitle_address}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_age}" for="age" />
-                    <h:inputText id="age" value="#{studentController.selected.age}" title="#{bundle.CreateStudentTitle_age}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_age}"/>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_birthday}" for="birthday" />
-                    <h:inputText id="birthday" value="#{studentController.selected.birthday}" title="#{bundle.CreateStudentTitle_birthday}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_created}" for="created" />
-                    <h:inputText id="created" value="#{studentController.selected.created}" title="#{bundle.CreateStudentTitle_created}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_deleted}" for="deleted" />
-                    <h:inputText id="deleted" value="#{studentController.selected.deleted}" title="#{bundle.CreateStudentTitle_deleted}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_dni}" for="dni" />
-                    <h:inputText id="dni" value="#{studentController.selected.dni}" title="#{bundle.CreateStudentTitle_dni}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_email}" for="email" />
-                    <h:inputText id="email" value="#{studentController.selected.email}" title="#{bundle.CreateStudentTitle_email}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_lastnameOne}" for="lastnameOne" />
-                    <h:inputText id="lastnameOne" value="#{studentController.selected.lastnameOne}" title="#{bundle.CreateStudentTitle_lastnameOne}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_lastnameTwo}" for="lastnameTwo" />
-                    <h:inputText id="lastnameTwo" value="#{studentController.selected.lastnameTwo}" title="#{bundle.CreateStudentTitle_lastnameTwo}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_modified}" for="modified" />
-                    <h:inputText id="modified" value="#{studentController.selected.modified}" title="#{bundle.CreateStudentTitle_modified}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_name}" for="name" />
-                    <h:inputText id="name" value="#{studentController.selected.name}" title="#{bundle.CreateStudentTitle_name}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_status}" for="status" />
-                    <h:inputText id="status" value="#{studentController.selected.status}" title="#{bundle.CreateStudentTitle_status}" />
-                    <h:outputLabel value="#{bundle.CreateStudentLabel_fkUnit}" for="fkUnit" />
-                    <h:selectOneMenu id="fkUnit" value="#{studentController.selected.fkUnit}" title="#{bundle.CreateStudentTitle_fkUnit}" required="true" requiredMessage="#{bundle.CreateStudentRequiredMessage_fkUnit}">
-                        <f:selectItems value="#{uniteController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{studentController.create}" value="#{bundle.CreateStudentSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{studentController.prepareList}" value="#{bundle.CreateStudentShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateStudentIndexLink}"/>
-            </h:form>
+            <div class="card bg-base-100 shadow-sm w-4/6 mx-auto">
+                <div class="card-body">
+                    <h:form id="createForm">
+                        <div class="grid grid-flow-col grid-rows-3 gap-4">  
+                            <div class="row-span-3 ...">
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="col-span-full ...">
+                                        <div class="flex flex-row content-center">
+                                            <div class="basis-1/3">
+                                                <div class="avatar avatar-placeholder">
+                                                    <div class="bg-neutral text-neutral-content w-24 rounded-full">
+                                                        <span class="text-3xl">D</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="basis-2/3 ">
+                                                <div class="grid grid-cols-2">
+                                                    <div class="...">
+                                                        <h1 data-title="true" class="mt-2 text-3xl font-medium tracking-tight text-gray-950 dark:text-white">
+                                                            <strong class="text-inline">
+                                                                <h1 id="studentName"/> 
+                                                                <h1 id="studentLastnameOne" /> 
+                                                                <h1 id="studentLastnameTwo" />
+                                                            </strong>
+
+                                                        </h1>
+                                                    </div>
+                                                    <div class="...">
+                                                        <h:commandButton styleClass="btn btn-sm" value="Resetear">
+                                                            <f:ajax execute="@this" resetValues="true" render="@form"/>
+                                                        </h:commandButton>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-full pt-1 ...">
+                                        <div class="divider divider-start text-sm">Datos personales</div>
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_name}" for="name" />
+                                        <h:inputText id="name" styleClass="input" value="#{studentController.selected.name}" 
+                                                     pt:placeholder="Nombres del estudiante"
+                                                     onkeyup="document.getElementById('studentName').innerText = this.value"
+                                                     title="#{bundle.student_title_name}" />
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_lastnameOne}" for="lastnameOne" />
+                                        <h:inputText id="lastnameOne" styleClass="input" value="#{studentController.selected.lastnameOne}" 
+                                                     pt:placeholder="Apellido paterno"
+                                                     onkeyup="document.getElementById('studentLastnameOne').innerText = this.value"
+                                                     title="#{bundle.student_title_lastnameOne}" />
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_lastnameTwo}" for="lastnameTwo" />
+                                        <h:inputText id="lastnameTwo" styleClass="input" value="#{studentController.selected.lastnameTwo}" 
+                                                     pt:placeholder="Apellido materno"
+                                                     onkeyup="document.getElementById('studentLastnameTwo').innerText = this.value"
+                                                     title="#{bundle.student_title_lastnameTwo}" />
+
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_birthday}" for="birthday" />
+                                        <h:inputText id="birthday" styleClass="input" type="date" value="#{studentController.selected.birthday}" title="#{bundle.CreateStudentTitle_birthday}" >
+                                            <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+                                            <f:ajax event="change" execute="@this" render="age validBirthday" 
+                                                    listener="#{studentController.calculateAge()}" />
+                                        </h:inputText>
+                                        <h:message id="validBirthday" for="birthday" errorStyle="color: red"/>
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_age}" for="age" />
+                                        <h:inputText id="age"  styleClass="input" disabled="true" type="number" value="#{studentController.selected.age}" title="#{bundle.student_title_age}" required="true" requiredMessage="#{bundle.student_required_age}"/>
+
+                                    </div>
+                                    <div class="... col-span-full">
+                                        <div class="divider divider-start text-sm">Datos de contacto</div>
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_address}" for="address" />
+                                        <h:inputText id="address" styleClass="input" value="#{studentController.selected.address}" 
+                                                     pt:placeholder="Direccion domiciliaria"
+                                                     title="#{bundle.student_title_address}" />
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_dni}" for="dni" />
+                                        <h:inputText id="dni" styleClass="input" value="#{studentController.selected.dni}" 
+                                                     pt:placeholder="Cedula de identidad"
+                                                     title="#{bundle.student_title_address}" />
+
+                                    </div>
+                                    <div class="...">
+                                        <h:outputLabel styleClass="label" value="#{bundle.student_label_email}" for="email" />
+                                        <h:inputText id="email" styleClass="input" type="email" value="#{studentController.selected.email}" 
+                                                     pt:placeholder="Direccion de correo"
+                                                     title="#{bundle.student_title_address}" />
+
+                                    </div>
+                                    <div class="col-span-full row-span-2 text-center ...">
+                                        <div class="flex flex-col justify-center">
+                                            <fieldset class="fieldset  border-base-300 rounded-box border p-4">
+                                                <legend class="fieldset-legend">Unidad Educativa</legend>
+
+                                                <h:outputLabel styleClass="label" value="#{bundle.student_label_fkUnit}" for="fkUnit" />
+                                                <h:selectOneMenu id="fkUnit" styleClass="select w-full" value="#{studentController.selected.fkUnit}" title="#{bundle.student_title_fkUnit}" required="true" requiredMessage="#{bundle.student_required_fkUnit}">
+                                                    <f:selectItems value="#{uniteController.itemsAvailableSelectOne}"/>
+                                                </h:selectOneMenu>
+                                                <p class="label">Seleccionar la unidad educativa</p>
+                                            </fieldset>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-span-2 ...">
+                                        <div class="card-actions  justify-end-safe">
+                                            <h:commandLink styleClass="btn btn-primary" action="#{studentController.create}" value="#{bundle.btn_save}" />
+                                            <h:commandLink styleClass="btn" action="#{studentController.prepareList}" value="#{bundle.btn_showAll}" immediate="true"/>
+                                        </div>
+                                    </div>  
+
+                                </div>
+
+                            </div> 
+
+
+
+                        </div>
+
+                    </h:form>
+                </div>
+            </div>
         </ui:define>
     </ui:composition>
 

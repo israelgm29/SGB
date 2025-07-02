@@ -7,119 +7,202 @@
 
     <ui:composition >
 
-        <h:form id="formEdit" prependId="false">
-            <div class="grid grid-cols-3 gap-4">
-                <div class="col-span-full ...">
-                    <div class="flex flex-row content-center">
-                        <div class="basis-1/3">
-                            <div class="avatar avatar-placeholder">
-                                <div class="bg-neutral text-neutral-content w-24 rounded-full">
-                                    <span class="text-3xl">D</span>
+        <h:form id="formEdit" prependId="false" styleClass="max-w-3xl mx-auto">
+            <!-- Visualización del nombre en tiempo real -->
+            <div class="mb-6 text-center md:text-left">
+                <h1 class="text-2xl font-bold">
+                    <span id="fullNameDisplay">
+                        #{sysuserController.selected.name} 
+                        #{sysuserController.selected.lastnameOne} 
+                        #{not empty sysuserController.selected.lastnameTwo ? sysuserController.selected.lastnameTwo : ''}
+                    </span>
+                </h1>
+                <div class="badge #{sysuserController.selected.status ? 'badge-success' : 'badge-error'} gap-2 mt-1">
+                    #{sysuserController.selected.status ? 'Activo' : 'Inactivo'}
+                </div>
+            </div>
+
+            <!-- Sección de Edición -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Columna Izquierda - Información Personal -->
+                <div class="space-y-4">
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="font-semibold text-gray-700 mb-3">Información Personal</h3>
+
+                            <div class="space-y-3">
+                                <!-- Nombre -->
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_name}"/>
+                                    <h:inputText id="name" value="#{sysuserController.selected.name}" 
+                                                 styleClass="input input-bordered input-sm w-full"
+                                                 onkeyup="updateNameDisplay()"
+                                                 required="true" />
+                                </div>
+
+                                <!-- Apellidos -->
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="form-control">
+                                        <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_lastnameOne}"/>
+                                        <h:inputText id="lastnameOne" value="#{sysuserController.selected.lastnameOne}" 
+                                                     styleClass="input input-bordered input-sm w-full"
+                                                     onkeyup="updateNameDisplay()" />
+                                    </div>
+                                    <div class="form-control">
+                                        <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_lastnameTwo}"/>
+                                        <h:inputText id="lastnameTwo" value="#{sysuserController.selected.lastnameTwo}" 
+                                                     styleClass="input input-bordered input-sm w-full"
+                                                     onkeyup="updateNameDisplay()" />
+                                    </div>
+                                </div>
+
+                                <!-- DNI -->
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_dni}"/>
+                                    <h:inputText id="dni" value="#{sysuserController.selected.dni}" 
+                                                 styleClass="input input-bordered input-sm w-full"
+                                                 required="true" />
                                 </div>
                             </div>
                         </div>
-                        <div class="basis-2/3 content-center">
-                            <strong><h1 id="userName"/> <h1 id="userLastname" /></strong>
+                    </div>
+
+                    <!-- Información de Contacto -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="font-semibold text-gray-700 mb-3">Contacto</h3>
+
+                            <div class="space-y-3">
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_email}"/>
+                                    <h:inputText id="email" value="#{sysuserController.selected.email}" 
+                                                 styleClass="input input-bordered input-sm w-full"
+                                                 required="true" />
+                                </div>
+
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_address}"/>
+                                    <h:inputText id="address" value="#{sysuserController.selected.address}" 
+                                                 styleClass="input input-bordered input-sm w-full" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_name}" for="name" />
-                    <h:inputText id="name" class="input input-sm" value="#{sysuserController.selected.name}" 
-                                 onkeyup="document.getElementById('userName').innerText = this.value" title="#{bundle.EditSysuserTitle_name}" />
 
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_lastnameOne}" for="lastnameOne" />
-                    <h:inputText id="lastnameOne" class="input input-sm" value="#{sysuserController.selected.lastnameOne}" 
-                                 onkeyup="document.getElementById('userLastname').innerText = this.value" title="#{bundle.EditSysuserTitle_lastnameOne}" />
+                <!-- Columna Derecha - Configuración -->
+                <div class="space-y-4">
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="font-semibold text-gray-700 mb-3">Configuración de Cuenta</h3>
 
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_lastnameTwo}" for="lastnameTwo" />
-                    <h:inputText id="lastnameTwo" class="input input-sm" value="#{sysuserController.selected.lastnameTwo}" title="#{bundle.EditSysuserTitle_lastnameTwo}" />
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_dni}" for="dni" />
-                    <h:inputText id="dni" class="input input-sm" value="#{sysuserController.selected.dni}" title="#{bundle.EditSysuserTitle_dni}" />
+                            <div class="space-y-3">
+                                <!-- Tipo de Usuario -->
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_fkLeveluser}"/>
+                                    <h:selectOneMenu id="fkLvlusr" value="#{sysuserController.selected.fkLvlusr}" 
+                                                     styleClass="select select-bordered select-sm w-full"
+                                                     required="true">
+                                        <f:selectItems value="#{levlusrController.itemsAvailableSelectOne}"/>
+                                    </h:selectOneMenu>
+                                </div>
 
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_email}" for="email" />
-                    <h:inputText id="email" class="input input-sm" value="#{sysuserController.selected.email}" title="#{bundle.EditSysuserTitle_email}" />
+                                <!-- Estado -->
+                                <div class="form-control">
+                                    <h:outputLabel styleClass="label label-text p-0 mb-1" value="#{bundle.user_label_status}"/>
+                                    <label class="flex items-center justify-between cursor-pointer">
+                                        <span>#{sysuserController.selected.status ? 'Activo' : 'Inactivo'}</span>
+                                        <h:selectBooleanCheckbox id="status" value="#{sysuserController.selected.status}" 
+                                                                 styleClass="toggle toggle-sm #{sysuserController.selected.status ? 'toggle-success' : ''}">
+                                            <f:ajax execute="@this" render="@none" />
+                                        </h:selectBooleanCheckbox>
+                                    </label>
+                                </div>
 
-                </div>
-                <div class="...">
-                    <h:outputLabel value="#{bundle.EditSysuserLabel_address}" for="address" />
-                    <h:inputText id="address" class="input input-sm" value="#{sysuserController.selected.address}" title="#{bundle.EditSysuserTitle_address}" />
-
-                </div>
-                <div class="... col-span-full">
-                    <ul class="list bg-base-100 rounded-box shadow-md">
-
-                        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most played songs this week</li>
-
-                        <li class="list-row">
-
-
-                            <div><h:graphicImage class="size-10 rounded-box" alt="type-account" library="images" name="accoutoff.svg"/></div>
-                            <div>
-                                <div> <h:outputLabel value="#{bundle.EditSysuserLabel_deleted}" for="deleted" /></div>
-                                <div class="text-xs uppercase font-semibold opacity-60">Dar de baja la cuenta</div>
+                                <!-- Baja Temporal -->
+                                <div class="form-control">
+                                    <label class="label label-text p-0 mb-1">Estado de Cuenta</label>
+                                    <div class="flex justify-between items-center">
+                                        <span>#{sysuserController.selected.deleted == null ? 'Activa' : 'Inactiva'}</span>
+                                        <button type="button" class="btn btn-xs #{sysuserController.selected.deleted == null ? 'btn-error' : 'btn-success'}"
+                                                onclick="#{sysuserController.selected.deleted == null ? 'confirmDeactivate()' : 'confirmActivate()'}">
+                                            #{sysuserController.selected.deleted == null ? 'Desactivar' : 'Activar'}
+                                        </button>
+                                    </div>
+                                    <h:inputHidden id="deleted" value="#{sysuserController.selected.deleted}">
+                                        <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                    </h:inputHidden>
+                                </div>
                             </div>
-                            <h:inputText id="deleted"  readonly="true " value="#{sysuserController.selected.deleted}" title="#{bundle.EditSysuserTitle_deleted}" >
-                                 <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
-                            </h:inputText>
+                        </div>
+                    </div>
 
-                        </li>
+                    <!-- Cambio de Contraseña -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="font-semibold text-gray-700 mb-3">Seguridad</h3>
 
-                        <li class="list-row">
-                            <div><h:graphicImage class="size-10 rounded-box" alt="type-account" library="images" name="admin.svg"/></div>
-                            <div>
-                                <div><h:outputLabel value="#{bundle.EditSysuserLabel_fkLvlusr}" for="fkLvlusr" /></div>
-                                <div class="text-xs uppercase font-semibold opacity-60">Tipo de cuenta</div>
+                            <div class="space-y-3">
+                                <div class="form-control">
+                                    <label class="label label-text p-0 mb-1">Nueva Contraseña</label>
+                                    <h:inputSecret id="password" value="#{sysuserController.selected.password}" 
+                                                   styleClass="input input-bordered input-sm w-full" />
+                                </div>
+
+                                <div class="form-control">
+                                    <label class="label label-text p-0 mb-1">Confirmar Contraseña</label>
+                                    <input type="password" class="input input-bordered input-sm w-full" />
+                                </div>
                             </div>
-                            <h:selectOneMenu id="fkLvlusr" class="select" value="#{sysuserController.selected.fkLvlusr}" title="#{bundle.EditSysuserTitle_fkLvlusr}" required="true" requiredMessage="#{bundle.EditSysuserRequiredMessage_fkLvlusr}">
-                                <f:selectItems value="#{levlusrController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                        </li>
-
-                        <li class="list-row items-center">
-
-
-                            <div><h:graphicImage class="size-10 rounded-box" alt="type-account" library="images" name="user_icon.svg"/></div>
-                            <div>
-                                <div><h:outputLabel value="#{bundle.EditSysuserLabel_status}" for="status" /></div>
-                                <div class="text-xs uppercase font-semibold opacity-60">Estado de Usuario</div>
-                            </div>
-                            <fieldset class="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
-                                <legend class="fieldset-legend">Desactivar/Activar</legend>
-                                <label class="label">
-                                    <h:selectBooleanCheckbox 
-                                        id="status" 
-                                        value="#{sysuserController.selected.status}" 
-                                        styleClass="toggle toggle-xs #{sysuserController.selected.status ? 'toggle-info' : ''}" >
-                                        <f:ajax execute="@this" render="status status-message" />
-                                    </h:selectBooleanCheckbox>
-                                    <h:outputLabel id="status-message" value="#{sysuserController.selected.status ? 'Usuario activo' : 'Usuario inactivo'}" />
-                                </label>
-                            </fieldset>
-
-                        </li>
-
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-action">
-                <h:commandButton value="Guardar" action="#{sysuserController.update}" class="btn btn-primary">
+
+            <!-- Acciones -->
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" class="btn btn-sm btn-ghost" onclick="editModal.close()">
+                    Cancelar
+                </button>
+                <h:commandButton value="Guardar Cambios" action="#{sysuserController.update}" 
+                                 styleClass="btn btn-sm btn-primary">
                     <f:ajax execute="@form" render="@form, :listForm:dataTable" 
                             onevent="function(data) { if (data.status === 'success') editModal.close(); }"/>
                 </h:commandButton>
-                <h:commandButton value="Cancelar" 
-                                 class="btn"
-                                 onclick="editModal.close()"/>
             </div>
 
+            <script>
+                // Actualiza el nombre en tiempo real
+                function updateNameDisplay() {
+                    const name = document.getElementById('formEdit:name').value;
+                    const lastname1 = document.getElementById('formEdit:lastnameOne').value;
+                    const lastname2 = document.getElementById('formEdit:lastnameTwo').value;
+
+                    let fullName = name;
+                    if (lastname1)
+                        fullName += ' ' + lastname1;
+                    if (lastname2)
+                        fullName += ' ' + lastname2;
+
+                    document.getElementById('fullNameDisplay').innerText = fullName;
+                }
+
+                function confirmDeactivate() {
+                    if (confirm('¿Está seguro que desea desactivar esta cuenta?')) {
+                        document.getElementById('formEdit:deleted').value = new Date().toISOString();
+                        // Forzar actualización del estado
+                        document.querySelector('#formEdit\\:status').click();
+                    }
+                }
+
+                function confirmActivate() {
+                    if (confirm('¿Está seguro que desea reactivar esta cuenta?')) {
+                        document.getElementById('formEdit:deleted').value = '';
+                        // Forzar actualización del estado
+                        document.querySelector('#formEdit\\:status').click();
+                    }
+                }
+            </script>
         </h:form>
 
     </ui:composition>

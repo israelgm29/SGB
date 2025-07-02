@@ -15,7 +15,7 @@
                 </h:panelGroup>
                 <h:form>
                     <div class="card-body">
-                        <h2 class="card-title">#{bundle.CreateSysuserTitle}</h2>
+                        <h2 class="card-title">#{bundle.user_create_title}</h2>
                         <div class="grid grid-cols-3 gap-3">
                             <div class="col-span-full ...">
                                 <div class="flex flex-row content-center">
@@ -35,38 +35,38 @@
                                 <div class="divider divider-start text-sm">Datos personales</div>
                             </div>
                             <div class="...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_name}" for="name" />
+                                <h:outputLabel value="#{bundle.user_label_name}" for="name" />
                                 <h:inputText class="input input-sm" id="name" value="#{sysuserController.selected.name}"
                                              pt:placeholder="Escribe tu nombre" title="#{bundle.CreateSysuserTitle_name}"
                                              onkeyup="document.getElementById('userName').innerText = this.value" autocomplete="off"/>
 
                             </div>
                             <div class="...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_lastnameOne}" for="lastnameOne" />
+                                <h:outputLabel value="#{bundle.user_label_lastnameOne}" for="lastnameOne" />
                                 <h:inputText class="input input-sm" id="lastnameOne" pt:placeholder="Escribe tu apellido paterno"
                                              value="#{sysuserController.selected.lastnameOne}" title="#{bundle.CreateSysuserTitle_lastnameOne}" 
                                              onkeyup="document.getElementById('userLastnameOne').innerText = this.value" autocomplete="off" />
                             </div>
                             <div class="...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_lastnameTwo}" for="lastnameTwo" />
+                                <h:outputLabel value="#{bundle.user_label_lastnameTwo}" for="lastnameTwo" />
                                 <h:inputText class="input input-sm" id="lastnameTwo" pt:placeholder="Escribe tu apellido materno"
                                              value="#{sysuserController.selected.lastnameTwo}" title="#{bundle.CreateSysuserTitle_lastnameTwo}" 
                                              onkeyup="document.getElementById('userLastnameTwo').innerText = this.value" autocomplete="off" />
                             </div>
                             <div class="...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_dni}" for="dni" />
+                                <h:outputLabel value="#{bundle.user_label_dni}" for="dni" />
                                 <h:inputText class="input input-sm" id="dni" pt:placeholder="Escribe cedula de identidad"
                                              value="#{sysuserController.selected.dni}" title="#{bundle.CreateSysuserTitle_dni}"/>
                             </div>
 
                             <div class="col-span-2 ...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_email}" for="email" />
+                                <h:outputLabel value="#{bundle.user_label_email}" for="email" />
                                 <h:inputText class="input input-sm w-full validator" id="email" required="true" type="email" pt:placeholder="Escribe tu correo electronico"
                                              value="#{sysuserController.selected.email}" title="#{bundle.CreateSysuserTitle_email}" />
                                 <div class="validator-hint">Enter valid email address</div>
                             </div>
                             <div class="col-span-full ...">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_address}" for="address" />
+                                <h:outputLabel value="#{bundle.user_label_address}" for="address" />
                                 <h:inputTextarea class="textarea w-full" id="address" value="#{sysuserController.selected.address}" title="#{bundle.CreateSysuserTitle_address}" />
 
                             </div>
@@ -74,9 +74,9 @@
                                 <div class="divider divider-start text-sm text-neutral-500">Cuenta</div>
                             </div>
                             <div class="... items-center">
-                                <h:outputLabel value="#{bundle.CreateSysuserLabel_fkLvlusr}" for="fkLvlusr" />
+                                <h:outputLabel value="#{bundle.user_label_fkLevel}" for="fkLvlusr" />
 
-                                <h:selectOneMenu class="select select-sm" id="fkLvlusr" value="#{sysuserController.selected.fkLvlusr}" title="#{bundle.CreateSysuserTitle_fkLvlusr}" required="true" requiredMessage="#{bundle.CreateSysuserRequiredMessage_fkLvlusr}">
+                                <h:selectOneMenu class="select select-sm" id="fkLvlusr" value="#{sysuserController.selected.fkLvlusr}" title="#{bundle.user_title_fkLevel}" required="true" requiredMessage="#{bundle.CreateSysuserRequiredMessage_fkLvlusr}">
                                     <f:selectItems value="#{levlusrController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
                                 <span class="label">Seleccionar el tipo de cuenta</span>
@@ -84,13 +84,13 @@
                         </div>
 
                         <div class="card-actions justify-center">
-                            <h:commandLink class="btn btn-dash btn-success" action="#{sysuserController.create}" 
-                                           value="#{bundle.CreateSysuserSaveLink}">
+                            <h:commandLink class="btn btn-primary" action="#{sysuserController.create}" 
+                                           value="#{bundle.btn_save}">
                                  
                             </h:commandLink>
                             <h:commandLink action="#{sysuserController.prepareList}" 
                                            class="btn"
-                                           value="#{bundle.EditSysuserShowAllLink}" immediate="true">
+                                           value="#{bundle.btn_showAll}" immediate="true">
                                  <f:ajax execute="@this" render="@all" />
                             </h:commandLink>
 

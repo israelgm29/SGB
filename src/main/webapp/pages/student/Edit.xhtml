@@ -5,66 +5,135 @@
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.EditStudentTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditStudentLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{studentController.selected.id}" title="#{bundle.EditStudentTitle_id}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_id}"/>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_address}" for="address" />
-                    <h:inputText id="address" value="#{studentController.selected.address}" title="#{bundle.EditStudentTitle_address}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_age}" for="age" />
-                    <h:inputText id="age" value="#{studentController.selected.age}" title="#{bundle.EditStudentTitle_age}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_age}"/>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_birthday}" for="birthday" />
-                    <h:inputText id="birthday" value="#{studentController.selected.birthday}" title="#{bundle.EditStudentTitle_birthday}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_created}" for="created" />
-                    <h:inputText id="created" value="#{studentController.selected.created}" title="#{bundle.EditStudentTitle_created}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_deleted}" for="deleted" />
-                    <h:inputText id="deleted" value="#{studentController.selected.deleted}" title="#{bundle.EditStudentTitle_deleted}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_dni}" for="dni" />
-                    <h:inputText id="dni" value="#{studentController.selected.dni}" title="#{bundle.EditStudentTitle_dni}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_email}" for="email" />
-                    <h:inputText id="email" value="#{studentController.selected.email}" title="#{bundle.EditStudentTitle_email}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_lastnameOne}" for="lastnameOne" />
-                    <h:inputText id="lastnameOne" value="#{studentController.selected.lastnameOne}" title="#{bundle.EditStudentTitle_lastnameOne}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_lastnameTwo}" for="lastnameTwo" />
-                    <h:inputText id="lastnameTwo" value="#{studentController.selected.lastnameTwo}" title="#{bundle.EditStudentTitle_lastnameTwo}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_modified}" for="modified" />
-                    <h:inputText id="modified" value="#{studentController.selected.modified}" title="#{bundle.EditStudentTitle_modified}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditStudentLabel_name}" for="name" />
-                    <h:inputText id="name" value="#{studentController.selected.name}" title="#{bundle.EditStudentTitle_name}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_status}" for="status" />
-                    <h:inputText id="status" value="#{studentController.selected.status}" title="#{bundle.EditStudentTitle_status}" />
-                    <h:outputLabel value="#{bundle.EditStudentLabel_fkUnit}" for="fkUnit" />
-                    <h:selectOneMenu id="fkUnit" value="#{studentController.selected.fkUnit}" title="#{bundle.EditStudentTitle_fkUnit}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_fkUnit}">
+    <ui:composition >
+
+        <h:form id="editForm">
+            <!-- Encabezado con Avatar -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="avatar avatar-placeholder">
+                    <div class="bg-neutral text-neutral-content w-24 rounded-full">
+                        <span class="text-3xl">D</span>
+                    </div>
+                </div>
+                <div class="flex-grow">
+                    <h1 class="text-2xl font-semibold">
+                        <span id="studentName">#{studentController.selected.name}</span>
+                        <span id="studentLastnameOne">#{studentController.selected.lastnameOne}</span>
+                        <span id="studentLastnameTwo">#{studentController.selected.lastnameTwo}</span>
+                    </h1>
+                    <div class="flex gap-2 mt-1">
+                        <h:commandButton styleClass="btn btn-xs btn-ghost" value="Resetear">
+                            <f:ajax execute="@this" resetValues="true" render="@form"/>
+                        </h:commandButton>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Datos Personales -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-medium divider">Datos Personales</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_name}" for="name" />
+                        <h:inputText id="name" styleClass="input input-bordered w-full" 
+                                     value="#{studentController.selected.name}" 
+                                     onkeyup="updateNamePreview()"
+                                     title="#{bundle.student_title_name}" />
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_lastnameOne}" for="lastnameOne" />
+                        <h:inputText id="lastnameOne" styleClass="input input-bordered w-full" 
+                                     value="#{studentController.selected.lastnameOne}" 
+                                     onkeyup="updateNamePreview()"
+                                     title="#{bundle.student_title_lastnameOne}" />
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_lastnameTwo}" for="lastnameTwo" />
+                        <h:inputText id="lastnameTwo" styleClass="input input-bordered w-full" 
+                                     value="#{studentController.selected.lastnameTwo}" 
+                                     onkeyup="updateNamePreview()"
+                                     title="#{bundle.student_title_lastnameTwo}" />
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_birthday}" for="birthday" />
+                        <h:inputText id="birthday" styleClass="input input-bordered w-full" type="date" 
+                                     value="#{studentController.selected.birthday}" 
+                                     title="#{bundle.student_title_birthday}">
+                            <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+                            <f:ajax event="change" execute="@this" render="age" 
+                                    listener="#{studentController.calculateAge()}" />
+                        </h:inputText>
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_age}" for="age" />
+                        <h:inputText id="age" styleClass="input input-bordered w-full" disabled="true" 
+                                     value="#{studentController.selected.age}" 
+                                     title="#{bundle.student_title_age}" />
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_dni}" for="dni" />
+                        <h:inputText id="dni" styleClass="input input-bordered w-full" 
+                                     value="#{studentController.selected.dni}" 
+                                     title="#{bundle.student_title_dni}" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Contacto -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-medium divider">Datos de Contacto</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_address}" for="address" />
+                        <h:inputText id="address" styleClass="input input-bordered w-full" 
+                                     value="#{studentController.selected.address}" 
+                                     title="#{bundle.student_title_address}" />
+                    </div>
+
+                    <div class="form-control">
+                        <h:outputLabel styleClass="label" value="#{bundle.student_label_email}" for="email" />
+                        <h:inputText id="email" styleClass="input input-bordered w-full" type="email" 
+                                     value="#{studentController.selected.email}" 
+                                     title="#{bundle.student_title_email}" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Unidad Educativa -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-medium divider">Unidad Educativa</h2>
+
+                <div class="form-control w-full">
+                    <h:outputLabel styleClass="label" value="#{bundle.student_label_fkUnit}" for="fkUnit" />
+                    <h:selectOneMenu id="fkUnit" styleClass="select select-bordered w-full" 
+                                     value="#{studentController.selected.fkUnit}" 
+                                     title="#{bundle.student_title_fkUnit}" 
+                                     required="true" 
+                                     requiredMessage="#{bundle.EditStudentRequiredMessage_fkUnit}">
                         <f:selectItems value="#{uniteController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandLink action="#{studentController.update}" value="#{bundle.EditStudentSaveLink}"/>
-                <br />
-                <br />
-                <h:link outcome="View" value="#{bundle.EditStudentViewLink}"/>
-                <br />
-                <h:commandLink action="#{studentController.prepareList}" value="#{bundle.EditStudentShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.EditStudentIndexLink}" />
-            </h:form>
-        </ui:define>
+                    <label class="label">
+                        <span class="label-text-alt">Seleccione la unidad educativa del estudiante</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex justify-end gap-4">
+                <h:commandLink styleClass="btn btn-ghost" action="#{studentController.prepareList}" 
+                               value="#{bundle.btn_showAll}" immediate="true"/>
+                <h:commandLink styleClass="btn btn-primary" action="#{studentController.create}" 
+                               value="#{bundle.btn_edit}" />
+            </div>
+        </h:form>
+
     </ui:composition>
 
 </html>

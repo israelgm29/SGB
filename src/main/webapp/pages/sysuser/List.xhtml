@@ -15,13 +15,13 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListSysuserEmpty}" rendered="#{sysuserController.items.rowCount == 0}"/>
+                <h:outputText escape="false" value="#{bundle.user_list_empty}" rendered="#{sysuserController.items.rowCount == 0}"/>
                 <h:panelGroup styleClass="card shadow-sm bg-base-100 p-4" rendered="#{sysuserController.items.rowCount > 0}">
                     <div class="flex justify-between">
                         <div class="...">
-                            <h:commandLink styleClass="btn" action="#{sysuserController.prepareCreate}" value="#{bundle.ListSysuserCreateLink}"/>
+                            <h:commandLink styleClass="btn" action="#{sysuserController.prepareCreate}" value="#{bundle.btn_create}"/>
                         </div>
-                        <div class="...">content</div>
+                        <div class="..."></div>
                         <div class="...">
                             <label class="input">
 
@@ -30,15 +30,18 @@
                         </div>
                     </div>
                     <h:dataTable id="dataTable" styleClass="table" rowClasses="hover:bg-base-300 truncate"  value="#{sysuserController.items}" var="item">
+                        <f:facet name="caption">
+                            <h:outputText value="#{bundle.user_list_title}" />
+                        </f:facet>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListSysuserTitle_id}"/>
+                                <h:outputText value="#{bundle.user_title_id}"/>
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListSysuserTitle_dni}"/>
+                                <h:outputText value="#{bundle.user_title_dni}"/>
                             </f:facet>
                             <h:outputText value="#{item.dni}"/>
                         </h:column>
@@ -49,22 +52,22 @@
                             <h:outputText value="#{item.lastnameOne} #{item.lastnameTwo} #{item.name} "/>
                         </h:column>
 
-                        <h:column>
+                        <h:column class="text-wrap">
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListSysuserTitle_address}"/>
+                                <h:outputText value="#{bundle.user_title_address}"/>
                             </f:facet>
                             <h:outputText value="#{item.address}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListSysuserTitle_email}"/>
+                                <h:outputText value="#{bundle.user_title_email}"/>
                             </f:facet>
                             <h:outputText value="#{item.email}"/>
                         </h:column>
 
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListSysuserTitle_status}"/>
+                                <h:outputText value="#{bundle.user_title_status}"/>
                             </f:facet>
                             <div class="inline-grid *:[grid-area:1/1]">
                                 <div class="status #{item.status == false ? 'status-error':'status-success'}  animate-ping"></div>
@@ -77,21 +80,23 @@
                                 <h:outputText value="Acciones"/>
                             </f:facet>
                             <div class="flex flex-row gap-1">
-                                <h:commandButton type="button" image="#{resource['images/view.svg']}"  action="#{sysuserController.prepareView}" title="#{bundle.ListSysuserViewLink}">
+                                <h:commandButton type="button" image="#{resource['images/view.svg']}"  action="#{sysuserController.prepareView}" title="#{bundle.btn_title_view}">
                                     <f:ajax execute="@this" render="viewModalWrapper:formView" onevent="function(data) {if (data.status === 'success') {
                                             viewModal.showModal();
                                             }
                                             }"/>
-                                    
+
                                 </h:commandButton>
-                                <h:commandButton image="#{resource['images/edit.svg']}" action="#{sysuserController.prepareEdit}" title="#{bundle.ListSysuserEditLink}">
+                                <h:commandButton image="#{resource['images/edit.svg']}" action="#{sysuserController.prepareEdit}" title="#{bundle.btn_title_edit}">
 
                                     <f:ajax execute="@this" render="editModalWrapper:formEdit" onevent="function(data) {if (data.status === 'success') {
                                             editModal.showModal();
                                             }
                                             }"/>
                                 </h:commandButton>
-                                <h:commandButton image="#{resource['images/delete.svg']}" action="#{sysuserController.destroy}" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                <h:commandButton image="#{resource['images/delete.svg']}" action="#{sysuserController.destroy}" 
+                                                 title="#{bundle.btn_title_delete}"
+                                                 onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
                                     <f:setPropertyActionListener target="#{sysuserController.selected}" value="#{item}" />
                                     <f:ajax execute="@this" render="@form" />
                                 </h:commandButton>
@@ -101,18 +106,18 @@
                         </h:column>
                     </h:dataTable>
                     <div class="flex flex-row items-center justify-center pt-3">
-                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.previous}" value="#{bundle.Previous} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.previous}" value="#{bundle.pagination_previous} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasPreviousPage}"/>&nbsp;
                         <h:outputText value="#{sysuserController.pagination.pageFirstItem + 1}..#{sysuserController.pagination.pageLastItem + 1}/#{sysuserController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.next}" value="#{bundle.Next} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasNextPage}"/>&nbsp;
+                        <h:commandLink class="join-item btn btn-outline btn-xs" action="#{sysuserController.next}" value="#{bundle.pagination_next} #{sysuserController.pagination.pageSize}" rendered="#{sysuserController.pagination.hasNextPage}"/>&nbsp;
                     </div>
 
                 </h:panelGroup>
-              
+
             </h:form>
 
             <ez:modalInformation id="viewModalWrapper" modalId="viewModal" 
-                                 modalTitle="Detalles de usuario" 
-                                 closeOnBackdrop="true">
+                                 modalTitle="#{bundle.user_view_title}"
+                                 closeOnBackdrop="true" size="max-w-4xl">
 
                 <f:facet name="modalContent">
 
@@ -121,8 +126,8 @@
             </ez:modalInformation>
 
             <ez:modalInformation id="editModalWrapper" modalId="editModal" 
-                                 modalTitle="Detalles de usuario" 
-                                 closeOnBackdrop="true">
+                                 modalTitle="#{bundle.user_edit_title}" 
+                                 closeOnBackdrop="true" size="max-w-4xl">
 
                 <f:facet name="modalContent">
 

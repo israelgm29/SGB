@@ -3,83 +3,144 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:ezcomp="jakarta.faces.composite/ezcomp">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.ListUniteTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
+            <h:form id="listForm">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListUniteEmpty}" rendered="#{uniteController.items.rowCount == 0}"/>
+
+                <h:outputText escape="false" value="#{bundle.unit_list_empty}" rendered="#{uniteController.items.rowCount == 0}"/>
+                <h:commandLink class="btn btn-secondary" action="#{uniteController.prepareCreate}" value="#{bundle.btn_create}" rendered="#{uniteController.items.rowCount == 0}">
+                    <f:ajax execute="@this" render="createModalWrapper:createForm" onevent="function(data) {if (data.status === 'success') {
+                            createModal.showModal();
+                            }
+                            }"/>
+                </h:commandLink>
                 <h:panelGroup rendered="#{uniteController.items.rowCount > 0}">
-                    <h:outputText value="#{uniteController.pagination.pageFirstItem + 1}..#{uniteController.pagination.pageLastItem + 1}/#{uniteController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{uniteController.previous}" value="#{bundle.Previous} #{uniteController.pagination.pageSize}" rendered="#{uniteController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{uniteController.next}" value="#{bundle.Next} #{uniteController.pagination.pageSize}" rendered="#{uniteController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{uniteController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                    <div class="flex flex-row justify-between">
+                        <div class="...">
+                            <h:commandLink class="btn btn-secondary" action="#{uniteController.prepareCreate}" value="#{bundle.btn_create}">
+                                <f:ajax execute="@this" render="createModalWrapper:createForm" onevent="function(data) {if (data.status === 'success') {
+                                        createModal.showModal();
+                                        }
+                                        }"/>
+                            </h:commandLink>
+                        </div>
+                        <div class="..."></div>
+                    </div>
+
+                    <h:dataTable id="dataTable" styleClass="table" value="#{uniteController.items}" var="item">
+                        <f:facet name="caption">
+                            <h:outputText value="#{bundle.unit_list_title}" />
+                        </f:facet>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_id}"/>
+                                <h:outputText value="#{bundle.unit_title_id}"/>
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_created}"/>
+                                <h:outputText value="#{bundle.unit_title_created}"/>
                             </f:facet>
                             <h:outputText value="#{item.created}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime type="localDateTime" pattern="dd 'de' MMMM 'de' yyyy, hh:mm a" locale="es"/>
                             </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_deleted}"/>
+                                <h:outputText value="#{bundle.unit_title_deleted}"/>
                             </f:facet>
                             <h:outputText value="#{item.deleted}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_modified}"/>
+                                <h:outputText value="#{bundle.unit_title_modified}"/>
                             </f:facet>
                             <h:outputText value="#{item.modified}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_name}"/>
+                                <h:outputText value="#{bundle.unit_title_name}"/>
                             </f:facet>
                             <h:outputText value="#{item.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListUniteTitle_fkDistrict}"/>
+                                <h:outputText value="#{bundle.unit_title_fkDistrict}"/>
                             </f:facet>
-                            <h:outputText value="#{item.fkDistrict}"/>
+                            <h:outputText value="#{item.fkDistrict.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{uniteController.prepareView}" value="#{bundle.ListUniteViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{uniteController.prepareEdit}" value="#{bundle.ListUniteEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{uniteController.destroy}" value="#{bundle.ListUniteDestroyLink}"/>
+                            <div class="flex flex-row gap-1">
+                                <h:commandButton type="button" image="#{resource['images/view.svg']}"  action="#{uniteController.prepareView}" title="#{bundle.btn_title_view}">
+                                    <f:ajax execute="@this" render="viewModalWrapper:formView" onevent="function(data) {if (data.status === 'success') {
+                                            viewModal.showModal();
+                                            }
+                                            }"/>
+
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/edit.svg']}" action="#{uniteController.prepareEdit}" title="#{bundle.btn_title_edit}">
+
+                                    <f:ajax execute="@this" render="editModalWrapper:formEdit" onevent="function(data) {if (data.status === 'success') {
+                                            editModal.showModal();
+                                            }
+                                            }"/>
+                                </h:commandButton>
+                                <h:commandButton image="#{resource['images/delete.svg']}" action="#{uniteController.destroy}" 
+                                                 title="#{bundle.btn_title_delete}"
+                                                 onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                    <f:ajax execute="@this" render="@form" />
+                                </h:commandButton>
+                            </div>
                         </h:column>
+                        <f:facet name="footer">
+                            <h:commandLink action="#{uniteController.previous}" value="#{bundle.pagination_previous} #{uniteController.pagination.pageSize}" rendered="#{uniteController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:outputText value="#{uniteController.pagination.pageFirstItem + 1}..#{uniteController.pagination.pageLastItem + 1}/#{uniteController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{uniteController.next}" value="#{bundle.pagination_next} #{uniteController.pagination.pageSize}" rendered="#{uniteController.pagination.hasNextPage}"/>&nbsp;
+
+                        </f:facet>
                     </h:dataTable>
                 </h:panelGroup>
-                <br />
-                <h:commandLink action="#{uniteController.prepareCreate}" value="#{bundle.ListUniteCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListUniteIndexLink}"/>
             </h:form>
+
+            <ezcomp:modalInformation id="createModalWrapper" 
+                                     modalId="createModal" modalTitle="#{bundle.unit_create_title}"
+                                     closeOnBackdrop="true">
+                <f:facet name="modalContent">
+                    <ui:include src="Create.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
+
+            <ezcomp:modalInformation id="editModalWrapper" 
+                                     modalId="editModal" modalTitle="#{bundle.unit_edit_title}"
+                                     closeOnBackdrop="true">
+                <f:facet name="modalContent">
+                    <ui:include src="Edit.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
+
+            <ezcomp:modalInformation id="viewModalWrapper" 
+                                     modalId="viewModal" modalTitle="#{bundle.unit_view_title}"
+                                     closeOnBackdrop="true">
+                <f:facet name="modalContent">
+                    <ui:include src="View.xhtml"/>
+                </f:facet>
+            </ezcomp:modalInformation>
         </ui:define>
     </ui:composition>
 

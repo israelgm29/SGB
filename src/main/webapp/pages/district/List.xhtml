@@ -82,9 +82,9 @@
                         </h:column>
                     </h:dataTable>
                     <div class="flex flex-row items-center justify-center pt-3">
-                        <h:commandLink action="#{districtController.previous}" value="#{bundle.Previous} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{districtController.previous}" value="#{bundle.pagination_previous} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasPreviousPage}"/>&nbsp;
                         <h:outputText value="#{districtController.pagination.pageFirstItem + 1}..#{districtController.pagination.pageLastItem + 1}/#{districtController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{districtController.next}" value="#{bundle.Next} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasNextPage}"/>&nbsp;
+                        <h:commandLink action="#{districtController.next}" value="#{bundle.pagination_next} #{districtController.pagination.pageSize}" rendered="#{districtController.pagination.hasNextPage}"/>&nbsp;
 
                     </div>
                 </h:panelGroup>

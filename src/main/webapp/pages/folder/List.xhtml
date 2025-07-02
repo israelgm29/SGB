@@ -17,8 +17,8 @@
                 <h:outputText escape="false" value="#{bundle.ListFolderEmpty}" rendered="#{folderController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{folderController.items.rowCount > 0}">
                     <h:outputText value="#{folderController.pagination.pageFirstItem + 1}..#{folderController.pagination.pageLastItem + 1}/#{folderController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{folderController.previous}" value="#{bundle.Previous} #{folderController.pagination.pageSize}" rendered="#{folderController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{folderController.next}" value="#{bundle.Next} #{folderController.pagination.pageSize}" rendered="#{folderController.pagination.hasNextPage}"/>&nbsp;
+                    <h:commandLink action="#{folderController.previous}" value="#{bundle.pagination_previous} #{folderController.pagination.pageSize}" rendered="#{folderController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{folderController.next}" value="#{bundle.pagination_next} #{folderController.pagination.pageSize}" rendered="#{folderController.pagination.hasNextPage}"/>&nbsp;
                     <h:dataTable value="#{folderController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">

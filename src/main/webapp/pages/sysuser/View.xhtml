@@ -6,111 +6,199 @@
       xmlns:f="jakarta.faces.core">
 
     <ui:composition>
-        <h:form id="formView" prependId="false">
-            <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-full ...">
-                    <div class="flex flex-row content-center">
-                        <div class="basis-1/3">
-                            <div class="avatar avatar-placeholder">
-                                <div class="bg-neutral text-neutral-content w-24 rounded-full">
-                                    <span class="text-3xl">D</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="basis-2/3 content-center">
-                            <strong>
-                                #{sysuserController.selected.name} 
-                                #{sysuserController.selected.lastnameOne} 
-                                #{sysuserController.selected.lastnameTwo}
-                            </strong>
-                            <div class="flex flex-col ... gap-2"> 
-                                <div class="basis-auto">
-                                    <div class="inline-grid *:[grid-area:1/1]">
-                                        <div class="status #{sysuserController.selected.status == false ? 'status-error':'status-success'}  animate-ping"></div>
-                                        <div class="status #{sysuserController.selected.status == false ? 'status-error':'status-success'}"></div>
-                                    </div> #{sysuserController.selected.status == false ? 'Usuario inactivo': 'Usuario activo'}
-                                </div>
-                                <div class="basis-auto">
-                                    Tipo de usuario: <div class="badge badge-neutral badge-dash">#{sysuserController.selected.fkLvlusr.name}</div>
-                                </div>
-                            </div>
-
+        <h:form id="formView" prependId="false" styleClass="max-w-3xl mx-auto">
+            <!-- Encabezado compacto -->
+            <div class="flex flex-col items-center md:items-start gap-4 mb-6">
+                <div class="flex items-center gap-4 w-full">
+                    <div class="avatar">
+                           <div class="w-24 rounded-full">
+                                <h:graphicImage alt="user-icon" library="images" name="user-icon.svg" />  
+                           </div>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">
+                            <h:outputText value="#{sysuserController.selected.name} #{sysuserController.selected.lastnameOne} #{sysuserController.selected.lastnameTwo}" />
+                        </h1>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="badge #{sysuserController.selected.fkLvlusr.name == 'Admin' ? 'badge-primary' : 'badge-secondary'}">
+                                <h:outputText value="#{sysuserController.selected.fkLvlusr.name}" />
+                            </span>
+                            <span class="text-xs #{sysuserController.selected.status ? 'text-success' : 'text-error'}">
+                                <h:outputText value="#{sysuserController.selected.status ? 'Activo' : 'Inactivo'}" />
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="...">
-                    <div class="flex items-center">
-                        <div class="flex items-center">
-                            <h:graphicImage alt="user-icon" library="images" name="user_icon.svg"/>
-                            <p><h:outputText value="#{bundle.ViewSysuserLabel_name}"/></p>
-                        </div>
-                    </div>
-                    <h:outputText class="font-light" value="#{sysuserController.selected.name} #{sysuserController.selected.lastnameOne} #{sysuserController.selected.lastnameTwo}" title="#{bundle.ViewSysuserTitle_name}"/>
-                </div>
-                <div class="...">
-                    <div class="flex items-center">
-                        <h:graphicImage alt="user-icon" library="images" name="history.svg"/>
-                        <p>Feha de registro</p>
-                    </div>
-                    <time>
-                        <h:outputText value="#{sysuserController.selected.created}" title="#{bundle.ViewSysuserTitle_created}">
-                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </h:outputText>
-                    </time>
-                </div>
-                <div class="...">
-                    <div class="flex items-center">
-                        <h:graphicImage alt="dni-icon" library="images" name="dni.svg" width="24px" height="24px"/>
-                        <h:outputText value="#{bundle.ViewSysuserLabel_dni}"/>
-                    </div>
-                    <h:outputText value="#{sysuserController.selected.dni}" title="#{bundle.ViewSysuserTitle_dni}"/>
-                </div>
-                <div class="...">
 
-                    <div class="flex items-center">
-                        <h:graphicImage alt="mail-icon" library="images" name="mail.svg"/>
-                        <h:outputText value="#{bundle.ViewSysuserLabel_email}"/>
-                    </div>
-                    <h:outputText value="#{sysuserController.selected.email}" title="#{bundle.ViewSysuserTitle_email}"/>
-
-                </div>
-                <div class="col-span-2 ...">
-                    <div class="flex items-center">
-                        <h:graphicImage alt="addres-icon" library="images" name="address.svg"/>
-                        <h:outputText value="#{bundle.ViewSysuserLabel_address}"/>
-                    </div>
-                    <p><h:outputText value="#{sysuserController.selected.address}" title="#{bundle.ViewSysuserTitle_address}"/></p>
-                </div>
-                <div class="col-span-2 ...">
-                    <div class="divider">Estado de cuenta</div>    
-                </div>
-                <div class="...">
-                    <div role="alert" class="alert #{sysuserController.selected.deleted == null ? 'alert-info':'alert-warning'} alert-dash">
-                        <span>
-                            <h:outputText rendered="#{sysuserController.selected.deleted != null}" value="Cuenta con baja temporal el: #{sysuserController.selected.deleted}">
-                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                <!-- Resumen compacto -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
+                    <div class="bg-base-100 p-2 rounded-box text-center">
+                        <div class="text-xs opacity-70">Registro</div>
+                        <div class="font-medium">
+                            <h:outputText value="#{sysuserController.selected.created}">
+                                <f:convertDateTime type="localDateTime" pattern="dd/MM/yy"/>
                             </h:outputText>
-                            <h:outputText rendered="#{sysuserController.selected.deleted == null}" value="Cuenta activa"/>
-                        </span>
+                        </div>
+                    </div>
 
-                    </div> 
-
-                </div>
-                <div class="...">
-                    <div role="alert" class="alert #{sysuserController.selected.modified == null ? 'alert-info':'alert-warning'} alert-dash">
-                        <span>
-                            <h:outputText rendered="#{sysuserController.selected.modified != null}" value="Ultima modificacion: #{sysuserController.selected.deleted}">
-                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    <div class="bg-base-100 p-2 rounded-box text-center">
+                        <div class="text-xs opacity-70">Últ. Modificación</div>
+                        <div class="font-medium">
+                            <h:outputText value="#{sysuserController.selected.modified != null ? sysuserController.selected.modified : 'Nunca'}">
+                                <f:convertDateTime type="localDateTime" pattern="dd/MM/yy" rendered="#{sysuserController.selected.modified != null}"/>
                             </h:outputText>
-                            <h:outputText rendered="#{sysuserController.selected.modified == null}" value="No se a realizado modificaciones en esta cuenta "/>
-                        </span>
+                        </div>
+                    </div>
 
-                    </div> 
+                    <div class="bg-base-100 p-2 rounded-box text-center">
+                        <div class="text-xs opacity-70">Estado de Usuario</div>
+                        <div class="font-medium">
+                            <h:outputText value="#{sysuserController.selected.deleted == null ? 'Activo' : 'Inactivo'}" />
+                        </div>
+                    </div>
+
+                    <div class="bg-base-100 p-2 rounded-box text-center">
+                        <div class="text-xs opacity-70">ID Usuario</div>
+                        <div class="font-medium">
+                            <h:outputText value="#{sysuserController.selected.id}" />
+                        </div>
+                    </div>
                 </div>
-
             </div>
-            
 
+            <!-- Sección de detalles -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Columna izquierda -->
+                <div class="space-y-4">
+                    <!-- Información personal -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="user-icon" library="images" name="user_icon.svg" styleClass="w-4 h-4"/>
+                                Información Personal
+                            </h3>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70"><h:outputText value="#{bundle.user_title_fullName}" /></span>
+                                    <span class="font-medium">
+                                        <h:outputText value="#{sysuserController.selected.name} #{sysuserController.selected.lastnameOne} #{sysuserController.selected.lastnameTwo}" />
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <span class="text-sm opacity-70"><h:outputText value="#{bundle.user_title_dni}" /></span>
+                                    <span class="font-medium">
+                                        <h:outputText value="#{sysuserController.selected.dni}" />
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span class="text-sm opacity-70"><h:outputText value="#{bundle.user_title_email}" /></span>
+                                    <a href="mailto:#{sysuserController.selected.email}" class="link link-secondary text-sm">
+                                        <h:outputText value="#{sysuserController.selected.email}" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="address-icon" library="images" name="location.svg" styleClass="w-4 h-4"/>
+                                <h:outputText value="#{bundle.user_title_address}"/>
+                            </h3>
+
+                            <div class="flex justify-between">
+                                <h:outputText value="#{sysuserController.selected.address}" 
+                                              rendered="#{sysuserController.selected.address != null and not empty sysuserController.selected.address}"
+                                              styleClass="font-medium"/>
+                                <span class="text-gray-400 text-sm" >
+                                    <h:outputText value="#{sysuserController.selected.address}" rendered="#{sysuserController.selected.address == null or empty sysuserController.selected.address}"/>
+                                    <h:outputText value="Direccion domiciliaria no registrada" rendered="#{sysuserController.selected.address == null or empty sysuserController.selected.address}"/>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="space-y-4">
+                    <!-- Estado de cuenta -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="status-icon" library="images" name="shield.svg" styleClass="w-4 h-4"/>
+                                Estado de Cuenta
+                            </h3>
+
+                            <div class="space-y-3">
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <div class="flex items-center gap-2">
+                                        <h:graphicImage alt="created-icon" library="images" name="calendar-add.svg" styleClass="w-4 h-4 opacity-70"/>
+                                        <span class="text-sm opacity-70"><h:outputText value="#{bundle.user_title_create}" /></span>
+                                    </div>
+                                    <span class="text-sm font-medium">
+                                        <h:outputText value="#{sysuserController.selected.created}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-base-200 pb-2">
+                                    <div class="flex items-center gap-2">
+                                        <h:graphicImage alt="modified-icon" library="images" name="edit.svg" styleClass="w-4 h-4 opacity-70"/>
+                                        <span class="text-sm opacity-70"><h:outputText value="#{bundle.user_title_modified}" /></span>
+                                    </div>
+                                    <span class="text-sm font-medium">
+                                        <h:outputText value="#{sysuserController.selected.modified != null ? sysuserController.selected.modified : 'Nunca'}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short" rendered="#{sysuserController.selected.modified != null}"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <h:graphicImage alt="status-icon" library="images" name="#{sysuserController.selected.deleted == null ? 'shield.svg' : 'accoutoff.svg'}" styleClass="w-4 h-4 opacity-70"/>
+                                        <span class="text-sm opacity-70">Estado actual</span>
+                                    </div>
+                                    <span class="text-sm font-medium #{sysuserController.selected.deleted == null ? 'text-success' : 'text-error'}">
+                                        <h:outputText value="#{sysuserController.selected.deleted == null ? 'Activo' : 'Inactivo desde'}" />
+                                        <h:outputText value="#{sysuserController.selected.deleted}" rendered="#{sysuserController.selected.deleted != null}">
+                                            <f:convertDateTime type="localDateTime" dateStyle="short" timeStyle="short"/>
+                                        </h:outputText>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="card bg-base-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="flex items-center gap-2 font-semibold mb-3">
+                                <h:graphicImage alt="actions-icon" library="images" name="settings.svg" styleClass="w-4 h-4"/>
+                                Acciones
+                            </h3>
+
+                            <div class="grid grid-cols-1 gap-2">
+                                <button class="btn btn-sm btn-outline btn-primary w-full">
+                                    <h:graphicImage alt="edit-icon" library="images" name="edit.svg" styleClass="w-4 h-4"/>
+                                    Editar Perfil
+                                </button>
+
+                                <button class="btn btn-sm btn-outline w-full">
+                                    <h:graphicImage alt="password-icon" library="images" name="key.svg" styleClass="w-4 h-4"/>
+                                    Cambiar Contraseña
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </h:form>
 
     </ui:composition>

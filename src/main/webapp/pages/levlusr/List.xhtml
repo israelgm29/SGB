@@ -17,8 +17,8 @@
                 <h:outputText escape="false" value="#{bundle.ListLevlusrEmpty}" rendered="#{levlusrController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{levlusrController.items.rowCount > 0}">
                     <h:outputText value="#{levlusrController.pagination.pageFirstItem + 1}..#{levlusrController.pagination.pageLastItem + 1}/#{levlusrController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{levlusrController.previous}" value="#{bundle.Previous} #{levlusrController.pagination.pageSize}" rendered="#{levlusrController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{levlusrController.next}" value="#{bundle.Next} #{levlusrController.pagination.pageSize}" rendered="#{levlusrController.pagination.hasNextPage}"/>&nbsp;
+                    <h:commandLink action="#{levlusrController.previous}" value="#{bundle.pagination_previous} #{levlusrController.pagination.pageSize}" rendered="#{levlusrController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{levlusrController.next}" value="#{bundle.pagination_next} #{levlusrController.pagination.pageSize}" rendered="#{levlusrController.pagination.hasNextPage}"/>&nbsp;
                     <h:dataTable value="#{levlusrController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
