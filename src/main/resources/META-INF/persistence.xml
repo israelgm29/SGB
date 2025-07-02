@@ -3,6 +3,7 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="my_persistence_unit" transaction-type="JTA">
     <jta-data-source>java:app/connDB</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
     </properties>
   </persistence-unit>
