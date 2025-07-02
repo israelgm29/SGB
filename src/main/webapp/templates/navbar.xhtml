@@ -3,94 +3,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html">
     <div class="min-h-full">
-        <nav class="bg-gray-800">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="shrink-0">
-                            <img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?" alt="Your Company" />
-                        </div>
-                        <div class="hidden md:block">
-                            <div class="ml-10 flex items-baseline space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                                
-                                <h:link  outcome="/index" styleClass="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" value="Dashboard"></h:link>
-                                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
-                                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
-                            </div>
-                        </div>
+        <nav class="navbar bg-base-200">
+            <div class="navbar-start">
+                <!-- Mobile menu button -->
+                <div class="dropdown md:hidden">
+                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </div>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                                <div class="w-10 rounded-full">
-                                    <img
-                                        alt="Tailwind CSS Navbar component"
-                                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                                </div>
-                            </div>
-                            <ul
-                                tabindex="0"
-                                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                                <li>
-                                    <a class="justify-between">
-                                        Profile
-                                        <span class="badge">New</span>
-                                    </a>
-                                </li>
-                                <li><a>Settings</a></li>
-                                <li><a>Logout</a></li>
-                            </ul>
-                        </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><h:link outcome="/Dashboard" styleClass="active" value="Dashboard"></h:link></li>
+                        <li><h:link outcome="/pages/student/List" value="Estudiantes"></h:link></li>
+                        <li><h:link outcome="/pages/unite/List" value="Unidades"></h:link></li>
+                        <li><h:link outcome="/pages/district/List" value="Distritos"></h:link></li>
+                        <li><h:link outcome="/pages/sysuser/List" value="Usuarios"></h:link></li>
+                    </ul>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="shrink-0">
+                        <img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?" alt="Your Company" />
                     </div>
+                    <a class="btn btn-ghost text-xl hidden md:block">Tu Empresa</a>
                 </div>
             </div>
 
-            <!-- Mobile menu, show/hide based on menu state. -->
-            <div class="md:hidden" id="mobile-menu">
-                <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
+            <!-- Desktop Navigation -->
+            <div class="navbar-center hidden md:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><h:link outcome="/Dashboard" styleClass="active" value="Dashboard"></h:link></li>
+                    <li><h:link outcome="/pages/student/List" value="Estudiantes"></h:link></li>
+                    <li><h:link outcome="/pages/unite/List" value="Unidades"></h:link></li>
+                    <li><h:link outcome="/pages/district/List" value="Distritos"></h:link></li>
+                    <li><h:link outcome="/pages/sysuser/List" value="Usuarios"></h:link></li>
+                </ul>
+            </div>
+
+            <!-- Right side elements -->
+            <div class="navbar-end gap-2">
+                <div class="form-control">
+                    <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
                 </div>
-                <div class="border-t border-gray-700 pt-4 pb-3">
-                    <div class="flex items-center px-5">
-                        <div class="shrink-0">
-                            <img class="size-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1" alt="" />
+
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full">
+                            <img alt="User avatar" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                         </div>
-                        <div class="ml-3">
-                            <div class="text-base/5 font-medium text-white">Tom Cook</div>
-                            <div class="text-sm font-medium text-gray-400">tom@example.com</div>
-                        </div>
-                        <button type="button" class="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only">View notifications</span>
-                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                            </svg>
-                        </button>
                     </div>
-                    <div class="mt-3 space-y-1 px-2">
-                        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-                        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
-                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                        <li>
+                            <a class="justify-between">
+                                Perfil
+                                <span class="badge badge-primary">Nuevo</span>
+                            </a>
+                        </li>
+                        <li><a>Configuración</a></li>
+                        <li><a>Cerrar sesión</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
 
-        <header class="bg-white shadow-sm">
-            <div class="mx-auto max-w-7xl px-2 py-4 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-               
-            </div>
-        </header>
-
+        <div class="text-sm breadcrumbs px-6 pt-4">
+            <ul>
+                <li><a>Dashboard</a></li> 
+                <li><a>Inicio</a></li>
+            </ul>
+        </div>
     </div>
 </html>

@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Dashboard"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="dashboardForm" styleClass="h-full">
+                <div class="container mx-auto px-4 py-8">
+                    <!-- Encabezado del Dashboard -->
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-light text-gray-800">Panel de Control</h1>
+                        <p class="text-gray-500">Resumen general del sistema</p>
+                    </div>
+
+                    <!-- Tarjetas de Métricas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <!-- Tarjeta Estudiantes -->
+                        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div class="card-body">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-gray-500 font-medium">Estudiantes</h2>
+                                        <p class="text-2xl font-light">1,248</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-blue-50 text-blue-500">
+                                        <h:graphicImage library="images" name="user-group.svg" styleClass="w-6 h-6"/>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-green-500 flex items-center">
+                                    <h:graphicImage library="images" name="trend-up.svg" styleClass="w-4 h-4 mr-1"/>
+                                    <span>12% vs último mes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Unidades -->
+                        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div class="card-body">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-gray-500 font-medium">Unidades</h2>
+                                        <p class="text-2xl font-light">24</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-green-50 text-green-500">
+                                        <h:graphicImage library="images" name="building.svg" styleClass="w-6 h-6"/>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-400">Sin cambios</div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Usuarios Activos -->
+                        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div class="card-body">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-gray-500 font-medium">Usuarios Activos</h2>
+                                        <p class="text-2xl font-light">86</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-purple-50 text-purple-500">
+                                        <h:graphicImage library="images" name="active-users.svg" styleClass="w-6 h-6"/>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-green-500 flex items-center">
+                                    <h:graphicImage library="images" name="trend-up.svg" styleClass="w-4 h-4 mr-1"/>
+                                    <span>5% vs última semana</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Registros Hoy -->
+                        <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div class="card-body">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-gray-500 font-medium">Registros Hoy</h2>
+                                        <p class="text-2xl font-light">14</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-orange-50 text-orange-500">
+                                        <h:graphicImage library="images" name="today.svg" styleClass="w-6 h-6"/>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-red-500 flex items-center">
+                                    <h:graphicImage library="images" name="trend-down.svg" styleClass="w-4 h-4 mr-1"/>
+                                    <span>3% vs ayer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico y Tabla Reciente -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Gráfico de Actividad -->
+                        <div class="card bg-white shadow-sm">
+                            <div class="card-body">
+                                <h2 class="card-title text-gray-700 mb-4">Actividad Reciente</h2>
+                                <div class="bg-gray-50 rounded-lg h-64 flex items-center justify-center">
+                                    <p class="text-gray-400">Gráfico de actividad se mostrará aquí</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Últimos Registros -->
+                        <div class="card bg-white shadow-sm">
+                            <div class="card-body">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="card-title text-gray-700">Últimos Estudiantes</h2>
+                                    <h:commandLink value="Ver todos" styleClass="link link-primary text-sm"/>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-500 mr-4">
+                                            <span>JD</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-medium">Juan Díaz</h3>
+                                            <p class="text-sm text-gray-500">Registrado hoy</p>
+                                        </div>
+                                        <span class="badge badge-sm badge-success">Activo</span>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-500 mr-4">
+                                            <span>MP</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-medium">María Pérez</h3>
+                                            <p class="text-sm text-gray-500">Registrado ayer</p>
+                                        </div>
+                                        <span class="badge badge-sm badge-success">Activo</span>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-500 mr-4">
+                                            <span>LG</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-medium">Luis Gómez</h3>
+                                            <p class="text-sm text-gray-500">Registrado hace 2 días</p>
+                                        </div>
+                                        <span class="badge badge-sm badge-success">Activo</span>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-500 mr-4">
+                                            <span>AM</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-medium">Ana Martínez</h3>
+                                            <p class="text-sm text-gray-500">Registrado hace 3 días</p>
+                                        </div>
+                                        <span class="badge badge-sm badge-error">Inactivo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendario y Notificaciones -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <!-- Próximos Eventos -->
+                        <div class="card bg-white shadow-sm">
+                            <div class="card-body">
+                                <h2 class="card-title text-gray-700 mb-4">Próximos Eventos</h2>
+                                <div class="space-y-3">
+                                    <div class="flex items-start">
+                                        <div class="text-center mr-4">
+                                            <div class="text-xs text-gray-500">MAY</div>
+                                            <div class="text-xl font-light">15</div>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Reunión de padres</h3>
+                                            <p class="text-sm text-gray-500">10:00 AM - Aula Principal</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="text-center mr-4">
+                                            <div class="text-xs text-gray-500">MAY</div>
+                                            <div class="text-xl font-light">18</div>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Exámenes parciales</h3>
+                                            <p class="text-sm text-gray-500">Todo el día</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="text-center mr-4">
+                                            <div class="text-xs text-gray-500">MAY</div>
+                                            <div class="text-xl font-light">22</div>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Taller de orientación</h3>
+                                            <p class="text-sm text-gray-500">2:00 PM - Sala de Conferencias</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notificaciones Recientes -->
+                        <div class="card bg-white shadow-sm">
+                            <div class="card-body">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="card-title text-gray-700">Notificaciones</h2>
+                                    <span class="badge badge-sm badge-primary">3 nuevas</span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="p-2 rounded-full bg-blue-50 text-blue-500 mr-3">
+                                            <h:graphicImage library="images" name="alert.svg" styleClass="w-4 h-4"/>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Nuevo estudiante registrado</h3>
+                                            <p class="text-sm text-gray-500">Juan Díaz se registró hoy</p>
+                                            <p class="text-xs text-gray-400">Hace 2 horas</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="p-2 rounded-full bg-green-50 text-green-500 mr-3">
+                                            <h:graphicImage library="images" name="check-circle.svg" styleClass="w-4 h-4"/>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Actualización completada</h3>
+                                            <p class="text-sm text-gray-500">El sistema se actualizó correctamente</p>
+                                            <p class="text-xs text-gray-400">Ayer, 3:45 PM</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="p-2 rounded-full bg-yellow-50 text-yellow-500 mr-3">
+                                            <h:graphicImage library="images" name="warning.svg" styleClass="w-4 h-4"/>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Recordatorio de reunión</h3>
+                                            <p class="text-sm text-gray-500">Reunión de mañana a las 10 AM</p>
+                                            <p class="text-xs text-gray-400">Ayer, 1:20 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
