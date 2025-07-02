@@ -108,7 +108,7 @@ public class District implements Serializable {
 
     @Override
     public String toString() {
-        return "com.bootsystem.entities.District[ id=" + id + " ]";
+        return name;
     }
     
 }

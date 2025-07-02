@@ -15,6 +15,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
@@ -36,6 +37,7 @@ public class Levlusr implements Serializable {
     @Column(name = "description")
     private String description;
     @Size(max = 255)
+    @NotNull
     @Column(name = "name")
     private String name;
 

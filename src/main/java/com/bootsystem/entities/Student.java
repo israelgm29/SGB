@@ -17,12 +17,11 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -54,43 +53,58 @@ public class Student implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 255)
+    @NotNull
     @Column(name = "address")
     private String address;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "age")
     private int age;
+    
     @Column(name = "birthday")
-    
+    @NotNull
     private LocalDate birthday;
+    
     @Column(name = "created")
+    private LocalDateTime created;
     
-    private LocalDate created;
     @Column(name = "deleted")
+    private LocalDateTime deleted;
     
-    private LocalDate deleted;
-    @Size(max = 255)
+    @Size(max = 10)
+    @NotNull
     @Column(name = "dni")
     private String dni;
+    
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 255)
+    @Size(max = 55)
     @Column(name = "email")
     private String email;
-    @Size(max = 255)
+    
+    @Size(max = 80)
+    @NotNull
     @Column(name = "lastname_one")
     private String lastnameOne;
-    @Size(max = 255)
+    
+    @Size(max = 80)
+    @NotNull
     @Column(name = "lastname_two")
     private String lastnameTwo;
-    @Column(name = "modified")
     
-    private LocalDate modified;
+    @Column(name = "modified")
+    private LocalDateTime modified;
+    
     @Size(max = 255)
+    @NotNull
     @Column(name = "name")
     private String name;
+    
     @Column(name = "status")
     private Boolean status;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkStudent")
     private Collection<Folder> folderCollection;
     @JoinColumn(name = "fk_unit", referencedColumnName = "id")
@@ -141,19 +155,19 @@ public class Student implements Serializable {
         this.birthday = birthday;
     }
 
-    public LocalDate getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public LocalDate getDeleted() {
+    public LocalDateTime getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(LocalDate deleted) {
+    public void setDeleted(LocalDateTime deleted) {
         this.deleted = deleted;
     }
 
@@ -189,11 +203,11 @@ public class Student implements Serializable {
         this.lastnameTwo = lastnameTwo;
     }
 
-    public LocalDate getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(LocalDate modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 

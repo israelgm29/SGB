@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -41,47 +42,55 @@ import java.time.LocalDateTime;
     @NamedQuery(name = "Sysuser.findByStatus", query = "SELECT s FROM Sysuser s WHERE s.status = :status")})
 public class Sysuser implements Serializable {
 
-    @Size(max = 255)
-    @Column(name = "address")
-    private String address;
-    @Column(name = "created")
-   
-    private LocalDateTime created;
-    @Column(name = "deleted")
-   
-    private LocalDateTime deleted;
-    @Size(max = 255)
-    
-    @Column(name = "dni")
-    private String dni;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 255)
-    @Column(name = "email")
-    private String email;
-    
-    @Size(max = 255)
-    @Column(name = "lastname_one")
-    private String lastnameOne;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 255)
-    @Column(name = "lastname_two")
-    private String lastnameTwo;
-    @Column(name = "modified")
-   
-    private LocalDateTime modified;
-    @Size(max = 255)
-    @Column(name = "name")
-    private String name;
-    @Size(max = 255)
-    
-    @Column(name = "password")
-    private String password;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
+    @Size(max = 255)
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "created")
+    private LocalDateTime created;
+
+    @Column(name = "deleted")
+    private LocalDateTime deleted;
+
+    @Size(max = 10)
+    @NotNull
+    @Column(name = "dni")
+    private String dni;
+
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 100)
+    @Column(name = "email")
+    private String email;
+
+    @Size(max = 80)
+    @NotNull
+    @Column(name = "lastname_one")
+    private String lastnameOne;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 80)
+    @NotNull
+    @Column(name = "lastname_two")
+    private String lastnameTwo;
+
+    @Column(name = "modified")
+    private LocalDateTime modified;
+
+    @Size(max = 80)
+    @NotNull
+    @Column(name = "name")
+    private String name;
+
+    @Size(max = 255)
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "status")
     private Boolean status;
     @JoinColumn(name = "fk_lvlusr", referencedColumnName = "id")
@@ -103,7 +112,6 @@ public class Sysuser implements Serializable {
         this.id = id;
     }
 
-
     public String getLastnameOne() {
         return lastnameOne;
     }
@@ -119,7 +127,6 @@ public class Sysuser implements Serializable {
     public void setLastnameTwo(String lastnameTwo) {
         this.lastnameTwo = lastnameTwo;
     }
-
 
     public Boolean getStatus() {
         return status;
@@ -146,7 +153,7 @@ public class Sysuser implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        
+
         if (!(object instanceof Sysuser)) {
             return false;
         }
@@ -225,5 +232,5 @@ public class Sysuser implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }

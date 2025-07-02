@@ -17,11 +17,10 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -45,20 +44,24 @@ public class Unite implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Column(name = "created")
+    private LocalDateTime created;
     
-    private LocalDate created;
     @Column(name = "deleted")
+    private LocalDateTime deleted;
     
-    private LocalDate deleted;
     @Column(name = "modified")
+    private LocalDateTime modified;
     
-    private LocalDate modified;
-    @Size(max = 255)
+    @Size(max = 80)
+    @NotNull
     @Column(name = "name")
     private String name;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkUnit")
     private Collection<Student> studentCollection;
+    
     @JoinColumn(name = "fk_district", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private District fkDistrict;
@@ -78,27 +81,27 @@ public class Unite implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public LocalDate getDeleted() {
+    public LocalDateTime getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(LocalDate deleted) {
+    public void setDeleted(LocalDateTime deleted) {
         this.deleted = deleted;
     }
 
-    public LocalDate getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(LocalDate modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 
@@ -148,7 +151,7 @@ public class Unite implements Serializable {
 
     @Override
     public String toString() {
-        return "com.bootsystem.entities.Unite[ id=" + id + " ]";
+        return name;
     }
     
 }

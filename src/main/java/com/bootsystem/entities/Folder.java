@@ -15,8 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -48,13 +46,13 @@ public class Folder implements Serializable {
     @Column(name = "code")
     private String code;
     @Column(name = "created")
-    
+
     private LocalDate created;
     @Column(name = "deleted")
-    
+
     private LocalDate deleted;
     @Column(name = "modified")
-    
+
     private LocalDate modified;
     @Column(name = "retired")
     private Boolean retired;
@@ -63,6 +61,10 @@ public class Folder implements Serializable {
     @JoinColumn(name = "fk_student", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Student fkStudent;
+
+    @JoinColumn(name = "fk_unit", referencedColumnName = "id")
+    @ManyToOne // No es "optional = false" porque heredará la unidad del Student
+    private Unite fkUnit; // Nuevo campo
 
     public Folder() {
     }
@@ -93,6 +95,14 @@ public class Folder implements Serializable {
 
     public void setCreated(LocalDate created) {
         this.created = created;
+    }
+
+    public Unite getFkUnit() {
+        return fkUnit;
+    }
+
+    public void setFkUnit(Unite fkUnit) {
+        this.fkUnit = fkUnit;
     }
 
     public LocalDate getDeleted() {
@@ -159,5 +169,5 @@ public class Folder implements Serializable {
     public String toString() {
         return "com.bootsystem.entities.Folder[ id=" + id + " ]";
     }
-    
+
 }
