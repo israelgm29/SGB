@@ -47,31 +47,28 @@ public class StudentJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+
+            // 1. Persiste el Student primero (para generar su ID)
+            em.persist(student);
+
+            // 2. Asigna la unidad (si existe)
             Unite fkUnit = student.getFkUnit();
             if (fkUnit != null) {
                 fkUnit = em.getReference(fkUnit.getClass(), fkUnit.getId());
                 student.setFkUnit(fkUnit);
-            }
-            Collection<Folder> attachedFolderCollection = new ArrayList<Folder>();
-            for (Folder folderCollectionFolderToAttach : student.getFolderCollection()) {
-                folderCollectionFolderToAttach = em.getReference(folderCollectionFolderToAttach.getClass(), folderCollectionFolderToAttach.getId());
-                attachedFolderCollection.add(folderCollectionFolderToAttach);
-            }
-            student.setFolderCollection(attachedFolderCollection);
-            em.persist(student);
-            if (fkUnit != null) {
                 fkUnit.getStudentCollection().add(student);
-                fkUnit = em.merge(fkUnit);
+                em.merge(fkUnit);
             }
-            for (Folder folderCollectionFolder : student.getFolderCollection()) {
-                Student oldFkStudentOfFolderCollectionFolder = folderCollectionFolder.getFkStudent();
-                folderCollectionFolder.setFkStudent(student);
-                folderCollectionFolder = em.merge(folderCollectionFolder);
-                if (oldFkStudentOfFolderCollectionFolder != null) {
-                    oldFkStudentOfFolderCollectionFolder.getFolderCollection().remove(folderCollectionFolder);
-                    oldFkStudentOfFolderCollectionFolder = em.merge(oldFkStudentOfFolderCollectionFolder);
+
+            // 3. Procesa los Folders (sin getReference!)
+            for (Folder folder : student.getFolderCollection()) {
+                folder.setFkStudent(student); // Asigna relación
+                if (folder.getFkUnit() == null && student.getFkUnit() != null) {
+                    folder.setFkUnit(student.getFkUnit()); // Copia unidad del Student
                 }
+                em.persist(folder); // Persiste cada Folder
             }
+
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -251,5 +248,5 @@ public class StudentJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }
