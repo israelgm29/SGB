@@ -2,4 +2,8 @@
 @source "../../**/*.xhtml";
 @source "../../pages/**/*.xhtml";
 @source "../**/*.js";
-@plugin "daisyui";
+ @plugin "daisyui" {
+
+   themes: emerald --default, dark --prefersdark;
+
+ }
