@@ -4,12 +4,14 @@ import com.bootsystem.entities.Student;
 import com.bootsystem.beans.util.JsfUtil;
 import com.bootsystem.beans.util.PaginationHelper;
 import com.bootsystem.controllers.StudentJpaController;
+import com.bootsystem.entities.Folder;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import jakarta.annotation.Resource;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -17,12 +19,18 @@ import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.model.DataModel;
 import jakarta.faces.model.ListDataModel;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.transaction.UserTransaction;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 @Named("studentController")
-@SessionScoped
+@ViewScoped
 public class StudentController implements Serializable {
 
     @Resource
@@ -35,6 +43,9 @@ public class StudentController implements Serializable {
     private StudentJpaController jpaController = null;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+
+    @Inject
+    private FolderController folderController;
 
     public StudentController() {
     }
@@ -74,13 +85,13 @@ public class StudentController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "List?faces-redirect=true";
     }
 
     public void prepareView() {
         current = (Student) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        
+
     }
 
     public String prepareCreate() {
@@ -89,30 +100,84 @@ public class StudentController implements Serializable {
         return "Create";
     }
 
+    public void calculateAge() {
+        // Primero verificar null
+        if (current.getBirthday() == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Debe ingresar una fecha de nacimiento"));
+            return;
+        }
+        // Luego verificar fecha futura
+        if (current.getBirthday().isAfter(LocalDate.now())) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("La fecha de nacimiento no puede ser futura"));
+            current.setAge(0); // Resetear edad si había valor previo
+            return;
+        }
+        // Calcular edad
+        long years = ChronoUnit.YEARS.between(current.getBirthday(), LocalDate.now());
+
+        // Validar rango razonable (opcional)
+        if (years > 120) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Por favor verifique la fecha de nacimiento"));
+            current.setAge(0);
+            return;
+        }
+
+        current.setAge((int) years);
+
+    }
+
     public String create() {
         try {
+            // Validación de unidad (obligatoria)
+            if (current.getFkUnit() == null) {
+                JsfUtil.addErrorMessage("El estudiante debe tener una unidad asignada.");
+                return null;
+            }
+
+            // Inicializa la colección si es null
+            if (current.getFolderCollection() == null) {
+                current.setFolderCollection(new ArrayList<>());
+            }
+
+            // Crea el Folder y asigna la unidad actual del Student
+            Folder folder = new Folder();
+            folder.setCreated(LocalDate.now());
+            folder.setFkStudent(current);
+            folder.setFkUnit(current.getFkUnit()); // ¡Aquí asignamos la unidad!
+            folder.setCode("Carpeta de " + current.getName() + " en " + current.getFkUnit().getName());
+
+            // Añade a la colección (la cascada lo persistirá)
+            current.getFolderCollection().add(folder);
+
+            // Persiste el Student (y el Folder por cascada)
+            current.setCreated(LocalDateTime.now());
+            current.setStatus(Boolean.TRUE);
             getJpaController().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentCreated"));
+
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("student_created"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, "Error al guardar.");
             return null;
         }
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         current = (Student) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        
     }
 
     public String update() {
         try {
             getJpaController().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("student_update"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
             return null;
         }
     }
@@ -144,7 +209,7 @@ public class StudentController implements Serializable {
             getJpaController().destroy(current.getId());
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
         }
     }
 

@@ -95,7 +95,7 @@ public class LevlusrController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LevlusrCreated"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
             return null;
         }
     }
@@ -112,7 +112,7 @@ public class LevlusrController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LevlusrUpdated"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
             return null;
         }
     }
@@ -144,7 +144,7 @@ public class LevlusrController implements Serializable {
             getJpaController().destroy(current.getId());
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("LevlusrDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
         }
     }
 

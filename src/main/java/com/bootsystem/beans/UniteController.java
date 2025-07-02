@@ -20,6 +20,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.transaction.UserTransaction;
+import java.time.LocalDateTime;
 
 @Named("uniteController")
 @SessionScoped
@@ -74,46 +75,49 @@ public class UniteController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "List?faces-redirect=true";
     }
 
-    public String prepareView() {
+    public void prepareView() {
         current = (Unite) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
     }
 
-    public String prepareCreate() {
+    public void prepareCreate() {
         current = new Unite();
+        current.setCreated(LocalDateTime.now());
         selectedItemIndex = -1;
-        return "Create";
+
     }
 
-    public String create() {
+    public void create() {
         try {
+
             getJpaController().create(current);
+            items = null;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UniteCreated"));
-            return prepareCreate();
+            prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
+
         }
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         current = (Unite) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
     }
 
-    public String update() {
+    public void update() {
         try {
+            current.setModified(LocalDateTime.now());
             getJpaController().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UniteUpdated"));
-            return "View";
+            items = null;
+
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
+
         }
     }
 
@@ -144,7 +148,7 @@ public class UniteController implements Serializable {
             getJpaController().destroy(current.getId());
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UniteDeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("error_persistence"));
         }
     }
 
